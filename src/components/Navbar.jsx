@@ -7,7 +7,7 @@ function Navbar () {
 
     return(
         <nav className="bg-orange-400 text-white w-full absolute top-0 left-0 h-14 shadow-lg rounded">
-            <div className="flex justify-between  w-full px-4 pt-2"> 
+            <div className="flex justify-between w-full px-4 pt-2"> 
                 <div className="flex items-center space-x-3 ml-2">
                     <img src={logo} alt="Logo" className="h-8 w-auto"/>
                     <span className="text-lg font-semibold">OnlyEat</span>
