@@ -1,15 +1,14 @@
 import './App.css'
 import Navbar from './components/Navbar'
 import Brows_1 from './components/Brows_1';
+import Brows_2 from './components/Brows_2';
 
 function App() {
   return (
-    <div >
+    <>
       <Navbar />
         <Brows_1 />
-        <h1 className="text-2xl font-bold">Bienvenido a Mi Proyecto</h1>
-        <p>Esta es la página principal de la aplicación.</p>
-    </div>
+    </>
   );
 }
 
