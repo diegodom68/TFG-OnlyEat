@@ -1,5 +1,5 @@
 import { useState } from "react";
-import logo from '../images/justeat.png';
+import logo from '../../images/justeat.png';
 import MenuIcon from '@mui/icons-material/Menu';
 
 function Navbar () {

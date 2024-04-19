@@ -1,6 +1,6 @@
-import { ReactComponent as MapIcon } from '../images/MapIcon.svg';
-import { ReactComponent as BurgerIcon } from '../images/BurgerIcon.svg';
-import { ReactComponent as OrderIcon } from '../images/OrderIcon.svg';
+import { ReactComponent as MapIcon } from '../../images/MapIcon.svg';
+import { ReactComponent as BurgerIcon } from '../../images/BurgerIcon.svg';
+import { ReactComponent as OrderIcon } from '../../images/OrderIcon.svg';
 
 
 // Componente Card individual
