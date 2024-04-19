@@ -1,13 +1,23 @@
 import './App.css'
 import Navbar from './components/HP/Navbar'
 import Brows_1 from './components/HP/Brows_1';
+import Brows_2 from "./components/HP/Brows_2";
 import HowTo from './components/HP/howto';
+import FeaturesSection from './components/HP/SectionHomePage';
+import FooterHP from './components/HP/FooterHP';
+
+
 function App() {
   return (
     <>
       <Navbar />
-      <Brows_1 />
+      <div className='flex flex-row items-center pt-14'>
+        <Brows_1 />
+        <Brows_2 />
+      </div>
       <HowTo />
+      <FeaturesSection />
+      <FooterHP />
     </>
   );
 }
