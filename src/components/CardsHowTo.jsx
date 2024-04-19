@@ -1,15 +1,51 @@
+import { ReactComponent as MapIcon } from '../images/MapIcon.svg';
+import { ReactComponent as BurgerIcon } from '../images/BurgerIcon.svg';
+import { ReactComponent as OrderIcon } from '../images/OrderIcon.svg';
 
 
-function CardHowTo () {
-    return (
-        <article>
-            <header className="flex flex-col text-center">
-            <svg width="56" height="67" viewBox="0 0 56 67" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M47.6875 7.67497C42.3933 2.82296 35.4306 0.201858 28.2511 0.358206C21.0716 0.514555 14.2295 3.43629 9.15165 8.51417C4.07377 13.592 1.15204 20.4341 0.995688 27.6136C0.839339 34.7931 3.46044 41.7558 8.31245 47.05L28 67L47.6875 47.3125C50.3092 44.7206 52.3906 41.6343 53.8112 38.2323C55.2318 34.8304 55.9632 31.1804 55.9632 27.4937C55.9632 23.8071 55.2318 20.1571 53.8112 16.7551C52.3906 13.3531 50.3092 10.2668 47.6875 7.67497V7.67497ZM43.05 42.675L28 57.5062L12.95 42.4562C8.96123 38.4544 6.7215 33.0345 6.7215 27.3843C6.7215 21.7341 8.96123 16.3143 12.95 12.3125C16.95 8.33708 22.3604 6.10579 28 6.10579C33.6395 6.10579 39.0499 8.33708 43.05 12.3125C47.0387 16.3143 49.2784 21.7341 49.2784 27.3843C49.2784 33.0345 47.0387 38.4544 43.05 42.4562V42.675ZM28 15.5937C25.6204 15.5937 23.2943 16.2993 21.3157 17.6214C19.3372 18.9434 17.7951 20.8224 16.8845 23.0208C15.9739 25.2192 15.7357 27.6383 16.1999 29.9722C16.6641 32.306 17.81 34.4498 19.4926 36.1324C21.1752 37.815 23.3189 38.9608 25.6528 39.425C27.9866 39.8893 30.4057 39.651 32.6041 38.7404C34.8025 37.8298 36.6816 36.2877 38.0036 34.3092C39.3256 32.3306 40.0312 30.0045 40.0312 27.625C40.0312 24.4341 38.7636 21.3739 36.5073 19.1176C34.251 16.8613 31.1908 15.5937 28 15.5937ZM28 33.0937C26.9183 33.0937 25.861 32.773 24.9617 32.1721C24.0623 31.5712 23.3614 30.7171 22.9475 29.7178C22.5336 28.7185 22.4253 27.6189 22.6363 26.5581C22.8473 25.4972 23.3681 24.5228 24.133 23.758C24.8978 22.9932 25.8722 22.4723 26.9331 22.2613C27.9939 22.0503 29.0935 22.1586 30.0928 22.5725C31.092 22.9864 31.9461 23.6874 32.5471 24.5867C33.148 25.486 33.4687 26.5434 33.4687 27.625C33.4687 29.0754 32.8925 30.4664 31.8669 31.492C30.8414 32.5176 29.4504 33.0937 28 33.0937Z" fill="#F36805"/>
-            </svg>
-            </header>
-        </article>
-    );
-}
+// Componente Card individual
+const Card = ({ Icon, title, description }) => {
+  return (
+    <div className="max-w-sm text-center p-4">
+      {/* Renderiza el ícono como un componente si es un ícono de Material-UI o como una imagen si es una ruta de archivo */}
+      {typeof Icon === 'string' ? <img src={Icon} alt={title} className="mx-auto" /> : <Icon className="mx-auto" />}
+      <h3 className="font-bold text-lg my-2">{title}</h3>
+      <p>{description}</p>
+    </div>
+  );
+};
 
-export default CardHowTo;
+// Componente para listar las tarjetas
+const CardSection = () => {
+  // Datos de ejemplo para las tarjetas
+  const cardsData = [
+    {
+      id: 1,
+      Icon: MapIcon, // Este es un componente de React
+      title: 'Dinos dónde estás',
+      description: 'Te mostraremos tiendas y restaurantes cercanos en los que puedes pedir.',
+    },
+    {
+      id: 2,
+      Icon: BurgerIcon, // Este es el path a tu ícono SVG
+      title: 'Encuentra lo que quieres',
+      description: 'Busca artículos o platos, establecimientos o tipos de cocina.',
+    },
+    {
+        id: 3,
+        Icon: OrderIcon,
+        title: 'Pedido para entrega o para recoger',
+        description: 'Te iremos informando a medida que avance tu pedido.'
+    }
+  ];
+
+  return (
+    <div className="flex flex-col md:flex-row justify-center items-center md:space-x-4 pt-10">
+      {cardsData.map((card) => (
+        <Card key={card.id} Icon={card.Icon} title={card.title} description={card.description} />
+      ))}
+    </div>
+  );
+};
+
+export default CardSection;
