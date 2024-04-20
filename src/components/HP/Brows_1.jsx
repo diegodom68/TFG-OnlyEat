@@ -8,7 +8,7 @@ function Brows_1 () {
             <div className="flex flex-col justify-center items-center h-full w-5/6">
                 <h2 className="text-4xl font-bold text-gray-800 mb-3">Pide Comida y mucho Más</h2>
                 <p className="text-xl text-gray-600 mb-6">Restaurantes y tiendas de alimentación que realizan entregas cerca de ti</p>
-                <AddressSearch apikey='AIzaSyAXWnCYBCFZAqldIeKXPtAKdP-YVv9E86o' />
+                <AddressSearch apikey='' />
             </div>
         </div>
     );
