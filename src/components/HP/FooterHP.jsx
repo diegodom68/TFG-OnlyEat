@@ -1,7 +1,7 @@
 
 export default function FooterHP () {
     return (
-            <footer className="bg-gray-800 text-white">
+            <footer className="bg-[#212121] text-white">
         <div className="max-w-6xl mx-auto px-4 py-8 md:py-12">
             <div className="md:flex md:justify-between">
             <div className="mb-6 md:mb-0">

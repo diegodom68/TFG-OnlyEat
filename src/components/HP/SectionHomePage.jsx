@@ -11,9 +11,9 @@ const FeatureCard = ({ Icon, title, description1, description2, description3 }) 
             </div>
             <h3 className="font-semibold text-lg mb-2">{title}</h3>
             <ul className='list-image-[url(https://img.icons8.com/material-outlined/24/checkmark--v3.png)]'>
-                {description1 && <li className="text-gray-600 text-sm">{description1}</li>}
-                {description2 && <li className="text-gray-600 text-sm">{description2}</li>}
-                {description3 && <li className="text-gray-600 text-sm">{description3}</li>}            
+                {description1 && <li className="text-[#212121] text-sm">{description1}</li>}
+                {description2 && <li className="text-[#212121] text-sm">{description2}</li>}
+                {description3 && <li className="text-[#212121] text-sm">{description3}</li>}            
             </ul>
         </div>
     );
@@ -46,7 +46,7 @@ function FeaturesSection() {
 ];
 
 return (
-    <div className="flex justify-center mt-12 bg-gray-100">
+    <div className="flex justify-center py-12 bg-[#F7F7F7]">
         {features.map((feature) => (
             <FeatureCard key={feature.id} Icon={feature.Icon} title={feature.title} description1={feature.description1} description2={feature.description2} description3={feature.description3} />
         ))}

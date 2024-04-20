@@ -9,8 +9,8 @@ const Card = ({ Icon, title, description }) => {
     <div className="max-w-sm text-center p-4">
       {/* Renderiza el ícono como un componente si es un ícono de Material-UI o como una imagen si es una ruta de archivo */}
       {typeof Icon === 'string' ? <img src={Icon} alt={title} className="mx-auto" /> : <Icon className="mx-auto" />}
-      <h3 className="font-bold text- my-2">{title}</h3>
-      <p className='text-sm'>{description}</p>
+      <h3 className="font-bold  my-2">{title}</h3>
+      <p className='text-sm text-[#212121]'>{description}</p>
     </div>
   );
 };

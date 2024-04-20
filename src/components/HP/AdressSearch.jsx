@@ -1,5 +1,5 @@
-
 import SearchIcon from '@mui/icons-material/Search';
+import AddressAPI from '../API/AdressAPI';
 
 const AddressSearch = () => {
   return (
@@ -8,10 +8,7 @@ const AddressSearch = () => {
         <div className="pl-2">
           <SearchIcon className="text-gray-500 mx-2" />
         </div>
-        <input
-          type="text"
-          placeholder="Escribe una dirección..."
-          className="p-2 flex-1 text-base focus:outline-none bg-transparent"
+        <AddressAPI 
         />
       </div>
     </div>
