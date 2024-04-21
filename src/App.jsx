@@ -11,7 +11,7 @@ import OnlyPass from './components/HP/OnlyPass';
 function App() {
   return (
     <>
-      <Navbar />
+      <Navbar  />
       <div className='flex flex-row items-center pt-14 bg-[#F7F7F7]'>
         <Brows_1 />
         <Brows_2 />

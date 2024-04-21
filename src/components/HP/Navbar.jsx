@@ -1,16 +1,15 @@
 import { useState } from "react";
-import logo from '../../images/justeat.png';
+import logo from '../../images/Cat-onlyeat.png';
 import MenuIcon from '@mui/icons-material/Menu';
 
 function Navbar () {
     const [isOpen, setIsOpen] = useState(false);
 
     return(
-        <nav className="bg-[#FFF8F0]  w-full absolute top-0 left-0 h-14 shadow-lg rounded">
-            <div className="flex justify-between w-full px-4 pt-2"> 
-                <div className="flex items-center space-x-3 ml-2">
-                    <img src={logo} alt="Logo" className="h-8 w-auto"/>
-                    <span className="text-lg font-semibold text-[#C53030]">OnlyEat</span>
+        <nav className="bg-[#FFF8F0]  w-full fixed top-0 left-0 h-14 shadow-lg rounded ">
+            <div className="flex justify-between w-full px-4 "> 
+                <div className="flex items-center ">
+                    <img src={logo} alt="Logo" className="w-32 pt-1"/>
                 </div>
                 <div className="content-end">
                 {/* Botón interactivo para menú */}

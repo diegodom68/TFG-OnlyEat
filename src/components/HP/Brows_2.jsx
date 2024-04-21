@@ -1,4 +1,4 @@
-import FotoFalafel from '../../images/falafel_salad_home_dss_desktop_es.cbd8906b.png'
+import FotoFalafel from '../../images/Browsphoto.png'
 
 function Brows_2 () {
     return(
