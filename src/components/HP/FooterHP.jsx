@@ -1,3 +1,5 @@
+import logo from '../../images/Cat-onlyeat.png';
+
 
 export default function FooterHP () {
     return (
@@ -6,8 +8,7 @@ export default function FooterHP () {
             <div className="md:flex md:justify-between">
             <div className="mb-6 md:mb-0">
                 <a href="#" className="flex items-center">
-                <img src="/path-to-your-logo.svg" className="mr-3 h-8" alt="Your Logo" />
-                <span className="self-center text-2xl font-semibold whitespace-nowrap">Tu Compañía</span>
+                <img src={logo} className="mr-3 h-8" alt="Your Logo" />
                 </a>
             </div>
             <div className="grid grid-cols-2 gap-8 sm:grid-cols-3 md:grid-cols-4">
