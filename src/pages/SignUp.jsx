@@ -1,13 +1,11 @@
 import { Link } from "react-router-dom";
 
-
-export default function LoginPage() {
-  return (
-    <>
-      <div className="flex flex-col h-screen justify-center items-center bg-[#F7F7F7]">
+export default function SignUp() {
+    return (
+        <div className="flex flex-col h-screen justify-center items-center bg-[#F7F7F7]">
         <div className="bg-[#C53030] rounded-lg p-8 w-2/6">
           <h1 className="text-4xl text-white text-center mb-6">
-            Iniciar Sesión
+            Crear Cuenta
           </h1>
           <form className="flex flex-col items-center space-y-4">
             <input
@@ -21,10 +19,11 @@ export default function LoginPage() {
               className="w-full max-w-xs h-10 rounded-md p-2"
             />
             <button className="w-full max-w-xs h-10 bg-[#FFF8F0] rounded-md hover:bg-[#FF7B72]">
-              Iniciar Sesión
+              Registrar
             </button>
-            <p className="text-white pt-4">¿Eres Nuevo?  <Link to='/signup' className="underline">Crear una cuenta</Link></p>
-          </form><br />
+            <p className="text-white pt-4">¿Ya tienes una Cuenta?  <Link to='/login' className="underline">Iniciar Sesión</Link></p>
+          </form>
+          <br />
           <hr />
           <p className="text-white text-sm text-center mt-4 px-2">
             Al crear la cuenta, aceptas nuestros términos y condiciones. Por
@@ -33,6 +32,5 @@ export default function LoginPage() {
           </p>
         </div>
       </div>
-    </>
-  );
+    );
 }
