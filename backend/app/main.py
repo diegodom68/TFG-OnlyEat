@@ -8,7 +8,7 @@ from sqlalchemy.orm import Session
 from fastapi.middleware.cors import CORSMiddleware
 import bcrypt
 
-¡
+
 app = FastAPI()
 
 origins = [
