@@ -35,10 +35,14 @@ def get_db():
 def main():
     return RedirectResponse(url="/docs/")
 
+
+
+"""
 @app.get('/users/', response_model=List[schemas.User])
 def show_user(db:Session = Depends(get_db)):
     users = db.query(models.User).all()
     return users
+
 
 @app.post('/users/', response_model=schemas.User)
 def create_users(entrada:schemas.User, db:Session = Depends(get_db)):
@@ -65,3 +69,4 @@ def delete_users(usuario_id: int , db:Session = Depends(get_db)):
     respuesta = schemas.Respuesta(mensaje="Usuario eliminado")
     return respuesta
 
+"""
