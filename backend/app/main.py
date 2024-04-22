@@ -3,13 +3,12 @@ from fastapi import FastAPI, HTTPException, status, Depends
 from fastapi.params import Depends
 from starlette.responses import RedirectResponse
 from . import models,schemas
-from .database import engine,SessionLocal
+from .database import Base,engine,SessionLocal
 from sqlalchemy.orm import Session
 from fastapi.middleware.cors import CORSMiddleware
 import bcrypt
 
-models.Base.metadata.create_all(bind=engine)
-
+¡
 app = FastAPI()
 
 origins = [
@@ -38,7 +37,7 @@ def main():
 
 
 
-
+"""
 @app.get('/users/', response_model=List[schemas.UserBase])
 def show_user(db:Session = Depends(get_db)):
     users = db.query(models.User).all()
@@ -68,7 +67,7 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     db.commit()
     db.refresh(db_user)
     return db_user
-"""
+
 
 @app.put('/users/{usuario_id}', response_model=schemas.User)
 def update_users(usuario_id: int ,entrada:schemas.UserUpdate, db:Session = Depends(get_db)):

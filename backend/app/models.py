@@ -1,88 +1,97 @@
 from sqlalchemy import Column, Integer, String, ForeignKey, Date, DateTime , Float
+from sqlalchemy.orm import Mapped
+from sqlalchemy.orm import mapped_column, registry
 from sqlalchemy.orm import relationship
-from .database import Base
 
-class User(Base):
+
+mapper_registry = registry()
+
+@mapper_registry.mapped
+class User:
     __tablename__ = "usuario"
-    id_usuario = Column(Integer, primary_key=True, index=True)
-    nombre = Column(String(200), nullable=False)
-    apellidos = Column(String(200), nullable=False)
-    username = Column(String(20), nullable=False, unique=True)
-    password = Column(String(256), nullable=False)
-    email = Column(String(25), nullable=False, unique=True)
-    cp = Column(Integer, nullable=False)
-    ciudad = Column(String(100), nullable=False)
-    fecha_nacimiento = Column(Date, nullable=False)
-    direccion = Column(String(200), nullable=False)
-    telefono = Column(String(20), nullable=False, unique=True)
+    id_usuario: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
+    nombre: Mapped[str] = mapped_column(String(200), nullable=False)
+    apellidos: Mapped[str] = mapped_column(String(200), nullable=False)
+    username: Mapped[str] = mapped_column(String(20), nullable=False, unique=True)
+    password: Mapped[str] = mapped_column(String(256), nullable=False)
+    email: Mapped[str] = mapped_column(String(25), nullable=False, unique=True)
+    cp: Mapped[int] = mapped_column(Integer, nullable=False)
+    ciudad: Mapped[str] = mapped_column(String(100), nullable=False)
+    fecha_nacimiento: Mapped[Date] = mapped_column(Date, nullable=False)
+    direccion: Mapped[str] = mapped_column(String(200), nullable=False)
+    telefono: Mapped[int] = mapped_column(String(20), nullable=False, unique=True)
 
-class Restaurante(Base):
+@mapper_registry.mapped
+class Restaurante:
     __tablename__ = "restaurante"
-    id_restaurante = Column(Integer, primary_key=True, index=True)
-    nombre = Column(String(200), nullable=False)
-    cif = Column(String(20), nullable=False, unique=True)
-    password = Column(String(256), nullable=False)
-    email = Column(String(100), nullable=False, unique=True)
-    cp = Column(Integer, nullable=False)
-    ciudad = Column(String(100), nullable=False)
-    direccion = Column(String(200), nullable=False)
-    telefono = Column(String(20), nullable=False, unique=True)
-    pedidos = relationship("Pedidos", back_populates="restaurante")
+    id_restaurante: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
+    nombre: Mapped[str] = mapped_column(String(200), nullable=False)
+    cif: Mapped[str] = mapped_column(String(20), nullable=False, unique=True)
+    password: Mapped[str] = mapped_column(String(256), nullable=False)
+    email: Mapped[str] = mapped_column(String(100), nullable=False, unique=True)
+    cp: Mapped[int] = mapped_column(Integer, nullable=False)
+    ciudad: Mapped[str] = mapped_column(String(100), nullable=False)
+    direccion: Mapped[str] = mapped_column(String(200), nullable=False)
+    telefono: Mapped[int] = mapped_column(String(20), nullable=False)
+    pedidos: Mapped[list] = relationship("Pedidos", back_populates="restaurante")
 
-class Pedidos(Base):
+@mapper_registry.mapped
+class Pedidos:
     __tablename__ = "pedidos"
-    id_pedido = Column(Integer, primary_key=True, index=True)
-    fecha_pedido = Column(DateTime, nullable=False)
-    estado = Column(String(50), nullable=False)
-    id_usuario = Column(Integer, ForeignKey("usuario.id_usuario"))
-    id_restaurante = Column(Integer, ForeignKey("restaurante.id_restaurante"))
-    usuario = relationship("User", back_populates="pedidos")
-    restaurante = relationship("Restaurante", back_populates="pedidos")
-
-class Productos(Base):
+    id_pedido: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
+    fecha_pedido: Mapped[DateTime] = mapped_column(DateTime, nullable=False)
+    estado: Mapped[str] = mapped_column(String(50), nullable=False)
+    id_usuario: Mapped[int] = mapped_column(Integer, ForeignKey("usuario.id_usuario"))
+    id_restaurante: Mapped[int] = mapped_column(Integer, ForeignKey("restaurante.id_restaurante"))
+    
+@mapper_registry.mapped
+class Productos:
     __tablename__ = "productos"
-    id_producto = Column(Integer, primary_key=True, index=True)
-    nombre = Column(String(200), nullable=False)
-    descripcion = Column(String(500), nullable=False)
-    precio = Column(Float, nullable=False)
-    id_restaurante = Column(Integer, ForeignKey("restaurante.id_restaurante"))
-    id_tipo_producto = Column(Integer, ForeignKey("tipo_producto.id_tipo_producto"))
-    restaurante = relationship("Restaurante", back_populates="productos")
+    id_producto: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
+    nombre: Mapped[str] = mapped_column(String(200), nullable=False)
+    descripcion: Mapped[str] = mapped_column(String(500), nullable=False)
+    precio: Mapped[Float] = mapped_column(Float, nullable=False)
+    id_restaurante: Mapped[int] = mapped_column(Integer, ForeignKey("restaurante.id_restaurante"))
+    id_tipo_producto: Mapped[int] = mapped_column(Integer, ForeignKey("tipo_producto.id_tipo_producto"))
 
-class Lineas_pedidos(Base):
+@mapper_registry.mapped
+class Lineas_pedidos:
     __tablename__ = "lineas_pedidos"
-    id_linea_pedido = Column(Integer, primary_key=True, index=True)
-    cantidad = Column(Float, nullable=False)
-    precio = Column(Integer, nullable=False)
-    id_pedido = Column(Integer, ForeignKey("pedidos.id_pedido"))
-    pedido = relationship("Pedidos", back_populates="lineas_pedidos")
+    id_linea_pedido: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
+    cantidad: Mapped[Float] = mapped_column(Float, nullable=False)
+    precio: Mapped[int] = mapped_column(Integer, nullable=False)
+    id_pedido: Mapped[int] = mapped_column(Integer, ForeignKey("pedidos.id_pedido"))
 
-class estan(Base):
+@mapper_registry.mapped
+class estan:
     __tablename__ = "estan"
-    id_producto = Column(Integer, ForeignKey("productos.id_producto"), primary_key=True)
-    id_linea_pedido = Column(Integer, ForeignKey("lineas_pedidos.id_linea_pedido"), primary_key=True)
+    id_producto: Mapped[int] = mapped_column(Integer, ForeignKey("productos.id_producto"), primary_key=True)
+    id_linea_pedido: Mapped[int] = mapped_column(Integer, ForeignKey("lineas_pedidos.id_linea_pedido"), primary_key=True)
 
-class Tipo_producto(Base):
+@mapper_registry.mapped
+class Tipo_producto:
     __tablename__ = "tipo_producto"
-    id_tipo_producto = Column(Integer, primary_key=True, index=True)
-    nombre = Column(String(100), nullable=False)
+    id_tipo_producto: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
+    nombre: Mapped[str] = mapped_column(String(100), nullable=False)
 
-class Metodos_pago(Base):
+@mapper_registry.mapped
+class Metodos_pago:
     __tablename__ = "metodos_pago"
-    id_metodo_pago = Column(Integer, primary_key=True, index=True)
-    nombre = Column(String(100), nullable=False)
+    id_metodo_pago: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
+    nombre: Mapped[str] = mapped_column(String(100), nullable=False)
 
-class usan(Base):
+@mapper_registry.mapped
+class usan:
     __tablename__ = "usan"
-    id_metodo_pago = Column(Integer, ForeignKey("metodos_pago.id_metodo_pago"), primary_key=True)
-    id_restaurante = Column(Integer, ForeignKey("restaurante.id_restaurante"), primary_key=True)
+    id_metodo_pago: Mapped[int] = mapped_column(Integer, ForeignKey("metodos_pago.id_metodo_pago"), primary_key=True)
+    id_restaurante: Mapped[int] = mapped_column(Integer, ForeignKey("restaurante.id_restaurante"), primary_key=True)
 
-class Valoraciones(Base):
+@mapper_registry.mapped
+class Valoraciones:
     __tablename__ = "valoraciones"
-    id_valoracion = Column(Integer, primary_key=True, index=True)
-    fecha_valoracion = Column(DateTime, nullable=False)
-    valoracion = Column(Integer, nullable=False)
-    id_restaurante = Column(Integer, ForeignKey("restaurante.id_restaurante"))
-    id_usuario = Column(Integer, ForeignKey("usuario.id_usuario"))
-    usuario = relationship("User", back_populates="valoraciones")
-    restaurante = relationship("Restaurante", back_populates="valoraciones")
+    id_valoracion: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
+    fecha_valoracion: Mapped[DateTime] = mapped_column(DateTime, nullable=False)
+    valoracion: Mapped[int] = mapped_column(Integer, nullable=False)
+    id_restaurante: Mapped[int] = mapped_column(Integer, ForeignKey("restaurante.id_restaurante"))
+    id_usuario: Mapped[int] = mapped_column(Integer, ForeignKey("usuario.id_usuario"))
+
