@@ -1,119 +1,98 @@
-from typing import Optional
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr, Field
+from datetime import datetime, date
+from typing import Optional, List
 
-class User(BaseModel):
-    id_usuario:Optional[int]
-    nombre:str
-    apellidos:str
-    username:str
-    passwors:str
-    email:str
-    cp:int
-    ciudad:str
-    direccion:str
-    telefono:str
+# Modelo Pydantic para el Usuario
+class UserBase(BaseModel):
+    nombre: str
+    apellidos: str
+    username: str
+    email: str
+    cp: int
+    ciudad: str
+    fecha_nacimiento: date
+    direccion: str
+    telefono: str
     
-    class Config:
-        orm_mode = True
-        
-        
-
-class Pedidos:
-    id_pedido:int
-    id_usuario:int
-    fecha_pedido:str
-    estado:Optional[str]
-    id_usuario:int
-    id_restaurante:int
-    class Config:
-        orm_mode = True
-
-class Restaurante:
-    id_restaurante:int
-    nombre:str
-    cif:str
-    password:str
-    email:str
-    cp:int
-    ciudad:str
-    direccion:str
-    telefono:str
-    class Config:
-        orm_mode = True
-
-class Productos:
-    id_producto:int
-    nombre:str
-    descripcion:str
-    precio:int
-    id_restaurante:int
-    id_tipo_producto:int
-    class Config:
-        orm_mode = True
-
-class TipoProducto: 
-    id_tipo_producto:int
-    nombre:str
-    class Config:
-        orm_mode = True
-
 class UserCreate(BaseModel):
-    nombre:str
-    apellidos:str
-    username:str
-    passwors:str
-    email:str
-    cp:int
-    ciudad:str
-    direccion:str
-    telefono:str
-    
+    nombre: str = Field(..., example="Juan")
+    apellidos: str = Field(..., example="Pérez")
+    username: str = Field(..., example="juanperez", min_length=3)
+    password: str = Field(..., example="unaContraseñaMuySegura!", min_length=5)
+    email: EmailStr = Field(..., example="juan@example.com")
+    cp: int = Field(..., example=28001)
+    ciudad: str = Field(..., example="Madrid")
+    fecha_nacimiento: date = Field(..., example="1990-04-22")
+    direccion: str = Field(..., example="Calle Falsa 123")
+    telefono: str = Field(..., example="1234567890")
+
+class UserCreate(UserBase):
+    password: str
+
+class UserDisplay(UserBase):
+    id_usuario: int
     class Config:
         orm_mode = True
 
-class estan:
-    id_producto:int
-    id_tipo_producto:int
+# Modelo Pydantic para Restaurante
+class RestauranteBase(BaseModel):
+    nombre: str
+    cif: str
+    email: str
+    cp: int
+    ciudad: str
+    direccion: str
+    telefono: str
+
+class RestauranteCreate(RestauranteBase):
+    password: str
+
+class RestauranteDisplay(RestauranteBase):
+    id_restaurante: int
     class Config:
         orm_mode = True
 
-class Metodospago:
-    id_metodo_pago:int
-    nombre:str
+# Modelo Pydantic para Pedidos
+class PedidoBase(BaseModel):
+    fecha_pedido: datetime
+    estado: str
+
+class PedidoCreate(PedidoBase):
+    id_usuario: int
+    id_restaurante: int
+
+class PedidoDisplay(PedidoBase):
+    id_pedido: int
+    usuario: Optional[UserDisplay]
+    restaurante: Optional[RestauranteDisplay]
     class Config:
         orm_mode = True
 
-class Valoracion:
-    id_valoracion:int
-    puntuacion:int
-    comentario:str
-    id_usuario:int
-    id_restaurante:int
+# Modelos Pydantic para otros objetos
+class ProductoBase(BaseModel):
+    nombre: str
+    descripcion: str
+    precio: float
+
+class ProductoCreate(ProductoBase):
+    id_restaurante: int
+    id_tipo_producto: int
+
+class ProductoDisplay(ProductoBase):
+    id_producto: int
+    restaurante: Optional[RestauranteDisplay]
     class Config:
         orm_mode = True
 
-class usan:
-    id_usuario:int
-    id_metodo_pago:int
+class TipoProductoBase(BaseModel):
+    nombre: str
+
+class TipoProductoDisplay(TipoProductoBase):
+    id_tipo_producto: int
     class Config:
         orm_mode = True
 
-class linea_pedido:
-    id_linea_pedido:int
-    precio:int
-    cantidad:int
-    id_pedido:int
-    id_producto:int
-    class Config:
-        orm_mode = True
+# Puedes continuar definiendo modelos para otras clases de forma similar.
 
 
-class UserUpdate(BaseModel):
-    nombre:str
-    
-    class Config:
-        orm_mode = True
-
-class Respuesta(BaseModel):
-    mensaje:str
 
