@@ -1,9 +1,60 @@
-from sqlalchemy import Column, Integer, String, ForeignKey, Date, DateTime , Float
-from sqlalchemy.orm import Mapped
-from sqlalchemy.orm import mapped_column, registry
+from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Date, DateTime, Float
 from sqlalchemy.orm import relationship
 
+from .database import Base
 
+
+
+class User(Base):
+    __tablename__ = "users"
+    
+    id_usuario = Column(Integer, primary_key=True, index=True)
+    nombre = Column(String(50), nullable=False)
+    apellido = Column(String(100), nullable=False)
+    username = Column(String(25), nullable=False, unique=True)
+    password = Column(String(256), nullable=False)
+    email = Column(String(150), nullable=False, unique=True)
+    cp = Column(Integer, nullable=False)
+    ciudad = Column(String(30), nullable=False)
+    fecha_nacimiento = Column(Date, nullable=False)
+    direccion = Column(String(200), nullable=False)
+    telefono = Column(String(15), nullable=False, unique=True)
+    
+    
+
+class Restaurante(Base):
+    __tablename__ = "restaurante"
+    
+    id_restaurante = Column(Integer, primary_key=True, index=True)
+    nombre = Column(String(50), nullable=False)
+    cif = Column(String(25), nullable=False, unique=True)
+    password = Column(String(256), nullable=False)
+    email = Column(String(100), nullable=False, unique=True)
+    cp = Column(Integer, nullable=False)
+    ciudad = Column(String(30), nullable=False)
+    direccion = Column(String(200), nullable=False)
+    telefono = Column(String(15), nullable=False)
+    
+    
+
+class Pedidos(Base):
+    __tablename__ = "pedidos"
+    
+    id_pedido = Column(Integer, primary_key=True, index=True)
+    fecha_pedido = Column(DateTime, nullable=False)
+    estado = Column(String(60), nullable=False)
+    id_usuario = Column(Integer, ForeignKey("users.id_usuario"))
+    id_restaurante = Column(Integer, ForeignKey("restaurante.id_restaurante"))
+    
+    
+    
+    
+
+
+
+
+
+"""
 mapper_registry = registry()
 
 @mapper_registry.mapped
@@ -95,3 +146,5 @@ class Valoraciones:
     id_restaurante: Mapped[int] = mapped_column(Integer, ForeignKey("restaurante.id_restaurante"))
     id_usuario: Mapped[int] = mapped_column(Integer, ForeignKey("usuario.id_usuario"))
 
+
+"""

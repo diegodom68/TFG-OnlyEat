@@ -1,7 +1,70 @@
-from pydantic import BaseModel, EmailStr, Field
-from datetime import datetime, date
-from typing import Optional, List
+from pydantic import BaseModel
+from datetime import date 
 
+class UserBase(BaseModel):
+    nombre: str
+    apellido: str
+    username: str
+    email: str
+    cp: int
+    ciudad: str
+    fecha_nacimiento: date
+    direccion: str
+    telefono: str
+
+class UserCreate(UserBase):
+    password: str
+
+class restaurantes(BaseModel):
+    nombre: str
+    cif: str
+    email: str
+    cp: int
+    ciudad: str
+    direccion: str
+    telefono: str
+
+class Pedidos(BaseModel):
+    fecha_pedido: str
+    estado: str
+    class Config:
+        orm_mode = True
+
+
+class User(UserBase):
+    id_usuario: int
+    class Config:
+        orm_mode = True
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+"""
 # Modelo Pydantic para el Usuario
 class UserBase(BaseModel):
     nombre: str
@@ -96,3 +159,4 @@ class TipoProductoDisplay(TipoProductoBase):
 
 
 
+"""
