@@ -1,6 +1,6 @@
 from fastapi import  FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from .routers import users
+from .routers import users , users_jwt
 from . import models
 from .database import SessionLocal, engine
 
@@ -13,6 +13,7 @@ app = FastAPI()
 
 ##Routers
 app.include_router(users.router)
+app.include_router(users_jwt.router)
 
 
 origins = [

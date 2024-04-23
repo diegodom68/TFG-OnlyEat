@@ -21,6 +21,7 @@ class User(Base):
     telefono = Column(String(15), unique=True)
     
     
+    
 
 class Restaurante(Base):
     __tablename__ = "restaurante"

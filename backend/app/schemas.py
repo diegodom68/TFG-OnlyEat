@@ -5,9 +5,8 @@ class UserBase(BaseModel):
     nombre: str
     apellido: str
     email: str
-    password: str
 
-class UserCreate(UserBase):
+class UserCreatedb(UserBase):
     password: str
 
 class restaurantes(BaseModel):
