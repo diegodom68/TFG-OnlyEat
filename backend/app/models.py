@@ -11,14 +11,14 @@ class User(Base):
     id_usuario = Column(Integer, primary_key=True, index=True)
     nombre = Column(String(50), nullable=False)
     apellido = Column(String(100), nullable=False)
-    username = Column(String(25), nullable=False, unique=True)
+    username = Column(String(25), unique=True)
     password = Column(String(256), nullable=False)
     email = Column(String(150), nullable=False, unique=True)
-    cp = Column(Integer, nullable=False)
-    ciudad = Column(String(30), nullable=False)
-    fecha_nacimiento = Column(Date, nullable=False)
-    direccion = Column(String(200), nullable=False)
-    telefono = Column(String(15), nullable=False, unique=True)
+    cp = Column(Integer)
+    ciudad = Column(String(30))
+    fecha_nacimiento = Column(Date)
+    direccion = Column(String(200))
+    telefono = Column(String(15), unique=True)
     
     
 

@@ -4,13 +4,8 @@ from datetime import date
 class UserBase(BaseModel):
     nombre: str
     apellido: str
-    username: str
     email: str
-    cp: int
-    ciudad: str
-    fecha_nacimiento: date
-    direccion: str
-    telefono: str
+    password: str
 
 class UserCreate(UserBase):
     password: str

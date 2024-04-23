@@ -21,7 +21,7 @@ function Usuarios() {
             <h1>Items</h1>
             <ul>
                 {usuario.map(usuario => (
-                    <li key={usuario.name}>{usuario.name} - {usuario.id}</li>
+                    <li key={usuario.name}>{usuario.username} - {usuario.nombre} - {usuario.apellido} - {usuario.email}</li>
                 ))}
             </ul>
         </div>
