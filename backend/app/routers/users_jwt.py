@@ -37,11 +37,11 @@ def authenticate_user(db: Session, email: str, password: str):
 
 def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
     try:
-        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        id_usuario: int  =  int(payload.get("sub"))
-        if id_usuario is None:
+        payload = jwt.decode(token, key=SECRET_KEY, algorithms=[ALGORITHM])
+        email =  payload.get("sub")
+        if email is None:
             raise HTTPException(status_code=401, detail="Invalid JWT token")
-        user = get_user(db, id_usuario)
+        user = get_user(db, email)
         if user is None:
             raise HTTPException(status_code=401, detail="User not found")
         return user
@@ -64,8 +64,8 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
     return {"access_token": access_token, "token_type": "bearer"}
 
 
-@router.get("/users/me", response_model=schemas.User)
-async def read_users_me(current_user: schemas.User = Depends(get_current_user)):
+@router.get("/users/me", response_model=schemas.UserBase)
+async def read_users_me(current_user: schemas.UserBase = Depends(get_current_user)):
     return current_user
     
 
