@@ -1,34 +1,26 @@
 from pydantic import BaseModel
 from datetime import date 
+from typing import Union
 
-class UserBase(BaseModel):
-    nombre: str
-    apellido: str
-    email: str
+class User(BaseModel):
+    username: str
+    email: Union[str, None] = None
+    nombre: Union[str, None] = None
+    apellido: Union[str, None] = None
 
-class UserCreatedb(UserBase):
+
+class UserInDB(User):
     password: str
-
-class restaurantes(BaseModel):
-    nombre: str
-    cif: str
-    email: str
-    cp: int
-    ciudad: str
-    direccion: str
-    telefono: str
-
-class Pedidos(BaseModel):
-    fecha_pedido: str
-    estado: str
-    class Config:
-        orm_mode = True
+    
 
 
-class User(UserBase):
+class Userread(User):
     id_usuario: int
     class Config:
         orm_mode = True
+
+
+
 
 
 

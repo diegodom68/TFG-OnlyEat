@@ -1,6 +1,7 @@
 from fastapi import APIRouter , HTTPException, Depends , status
 from sqlalchemy.orm import Session
 from datetime import datetime,timezone, timedelta
+from typing import Union
 from .. import crud, schemas , models
 from ..database import get_db
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
@@ -13,8 +14,9 @@ ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
-router = APIRouter(tags=["Authentication"])
+router = APIRouter( tags=["Authentication"])
 
 def create_acces_token(data: dict,expires_delta: timedelta = None):
     to_encode = data.copy()
@@ -26,27 +28,44 @@ def create_acces_token(data: dict,expires_delta: timedelta = None):
     encode_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return encode_jwt
 
-def get_user(db: Session, email: str):
-    return db.query(models.User).filter(models.User.email == email).first()
+def get_user(db: Session, username: str) -> Union[schemas.User, None]:
+    user = db.query(models.Users).filter(models.Users.username == username).first()
+    if user:
+        print(user)
+        return schemas.UserInDB(**user.__dict__)
+    return None
 
-def authenticate_user(db: Session, email: str, password: str):
-    user = get_user(db, email)
+
+def verify_password(plain_password,hashed_password):
+    return pwd_context.verify(plain_password, hashed_password)
+
+def authenticate_user(db: Session, username: str, password: str):
+    user = get_user(db, username)
+    print(user)
     if not user :
-        return False
+        raise HTTPException(status_code=404, detail="User not found", headers={"WWW-Authenticate": "Bearer"})
+    if not verify_password(password, user.password):
+        raise HTTPException(status_code=400, detail="Incorrect username or password", headers={"WWW-Authenticate": "Bearer"})
     return user
 
-def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
+def get_current_user(db: Session = Depends(get_db),token: str = Depends(oauth2_scheme)):
     try:
         payload = jwt.decode(token, key=SECRET_KEY, algorithms=[ALGORITHM])
-        email =  payload.get("sub")
-        if email is None:
-            raise HTTPException(status_code=401, detail="Invalid JWT token")
-        user = get_user(db, email)
-        if user is None:
-            raise HTTPException(status_code=401, detail="User not found")
-        return user
+        print(payload)
+        username =  payload.get("sub")
+        print(username)
+        if not username:
+            raise HTTPException(status_code=401, detail="Invalid JWT token", headers={"WWW-Authenticate": "Bearer"})
     except JWTError:
         raise HTTPException(status_code=401, detail="Invalid JWT token")
+    user = db.query(schemas.User).filter(schemas.User.username == username).first()
+    print(user)
+    if user is None:
+        raise HTTPException(status_code=401, detail="User not found", headers={"WWW-Authenticate": "Bearer"})
+    return user
+
+
+
 
 @router.post("/token", response_model=dict)
 async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
@@ -59,14 +78,14 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
         )
     acces_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_acces_token(
-        data={"sub": user.email}, expires_delta=acces_token_expires
+        data={"sub": user.username}, expires_delta=acces_token_expires
     )
     return {"access_token": access_token, "token_type": "bearer"}
 
 
-@router.get("/users/me", response_model=schemas.UserBase)
-async def read_users_me(current_user: schemas.UserBase = Depends(get_current_user)):
-    return current_user
+@router.get("/users/me")
+async def me(user: models.Users = Depends(get_current_user)):
+    return user
     
 
 
