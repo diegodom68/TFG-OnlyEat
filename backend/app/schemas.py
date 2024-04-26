@@ -8,6 +8,9 @@ class User(BaseModel):
     nombre: Union[str, None] = None
     apellido: Union[str, None] = None
 
+class TokenData(BaseModel):
+    username: str | None = None
+
 
 class UserInDB(User):
     password: str
@@ -16,8 +19,6 @@ class UserInDB(User):
 
 class Userread(User):
     id_usuario: int
-    class Config:
-        orm_mode = True
 
 
 

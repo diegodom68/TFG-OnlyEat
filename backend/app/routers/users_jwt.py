@@ -1,7 +1,7 @@
 from fastapi import APIRouter , HTTPException, Depends , status
 from sqlalchemy.orm import Session
 from datetime import datetime,timezone, timedelta
-from typing import Union
+from typing import Union , Annotated
 from .. import crud, schemas , models
 from ..database import get_db
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
@@ -48,21 +48,25 @@ def authenticate_user(db: Session, username: str, password: str):
         raise HTTPException(status_code=400, detail="Incorrect username or password", headers={"WWW-Authenticate": "Bearer"})
     return user
 
-def get_current_user(db: Session = Depends(get_db),token: str = Depends(oauth2_scheme)):
+async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)], db: Session = Depends(get_db)):
+    credentials_exception = HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED, detail="Could not validate credentials", headers={"WWW-Authenticate": "Bearer"}
+    )
     try:
-        payload = jwt.decode(token, key=SECRET_KEY, algorithms=[ALGORITHM])
-        print(payload)
-        username =  payload.get("sub")
-        print(username)
-        if not username:
-            raise HTTPException(status_code=401, detail="Invalid JWT token", headers={"WWW-Authenticate": "Bearer"})
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        username: str = payload.get("sub")
+        if username is None:
+            raise credentials_exception
+        token_data = schemas.TokenData(username=username)
     except JWTError:
-        raise HTTPException(status_code=401, detail="Invalid JWT token")
-    user = db.query(schemas.User).filter(schemas.User.username == username).first()
-    print(user)
+        raise credentials_exception
+    user = get_user(db, username=token_data.username)
     if user is None:
-        raise HTTPException(status_code=401, detail="User not found", headers={"WWW-Authenticate": "Bearer"})
+        raise credentials_exception
     return user
+
+async def get_current_active_user(current_user: Annotated[models.Users, Depends(get_current_user)]):
+    return current_user
 
 
 
@@ -83,9 +87,9 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
     return {"access_token": access_token, "token_type": "bearer"}
 
 
-@router.get("/users/me")
-async def me(user: models.Users = Depends(get_current_user)):
-    return user
+@router.get("/users/me", response_model=schemas.User)
+async def read_users_me(current_user: Annotated[models.Users, Depends(get_current_active_user)]):
+    return current_user
     
 
 
