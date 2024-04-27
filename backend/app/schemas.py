@@ -7,6 +7,10 @@ class User(BaseModel):
     email: Union[str, None] = None
     nombre: Union[str, None] = None
     apellido: Union[str, None] = None
+    direccion: Union[str, None] = None
+    telefono: Union[str, None] = None
+    cp: Union[int, None] = None
+    ciudad: Union[str, None] = None
 
 class TokenData(BaseModel):
     username: str | None = None
