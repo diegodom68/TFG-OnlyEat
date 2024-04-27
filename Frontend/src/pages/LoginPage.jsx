@@ -25,7 +25,7 @@ export default function LoginPage() {
 
       if (response.ok) {
         // Suponiendo que el token se devuelve en `data.token`
-        localStorage.setItem("authToken", data.access_token); // Guardar el token recibido
+        sessionStorage.setItem("authToken", data.access_token); // Guardar el token recibido
         console.log(localStorage.getItem("authToken"));
         navigate("/"); // Redirigir a la página principal después del inicio de sesión
       } else {
