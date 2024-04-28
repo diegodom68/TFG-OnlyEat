@@ -1,6 +1,6 @@
 import React from "react";
 import Navbar from "../components/HP/Navbar";
-import Sidebar from "../components/API/sidebar/sidebar_config";
+import Sidebar from "../components/sidebar/sidebar_config";
 import axios from "axios";
 import { useState, useEffect } from "react";
 
@@ -43,7 +43,7 @@ function Usuarios() {
   return (
     <>
       <Navbar />
-      <div className="flex mt-14">
+      <div className="flex ">
         <div className="w-2/12 h-screen me-16">
           <Sidebar />
         </div>
@@ -162,7 +162,12 @@ function Usuarios() {
                   value={userData.cp}
                 ></input>
               </div>
-              <button type="submit">Submit</button>
+              <button
+                className=" my-8 mx-4 px-2 py-2 dark:bg-gray-800 rounded-md text-white hover:bg-gray-700 "
+                type="submit"
+              >
+                Actualizar datos
+              </button>
             </div>
           </form>
         </div>

@@ -13,7 +13,7 @@ function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <nav className="bg-[#FFF8F0] relative w-full top-0 left-0  h-14 shadow-lg rounded z-10">
+    <nav className="bg-[#FFF8F0] relative w-full top-0 left-0 h-14 shadow-lg rounded z-10">
       <div className="flex justify-between w-full px-4">
         <div className="flex items-center">
           <Link to="/">
@@ -25,12 +25,23 @@ function Navbar() {
           {!isAuthenticated() ? (
             <ButtonAccount />
           ) : (
-            <button
-              onClick={() => setIsOpen(!isOpen)}
-              className="p-0 rounded-md text-white hover:bg-[#E63946] focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
-            >
-              <MenuIcon className="text-[#C53030] hover:text-white" />
-            </button>
+            // No anides botones dentro de Link o viceversa
+            <div className="flex items-center">
+              {/* Este es un Link que parece un botón */}
+              <Link
+                to="/restaurant"
+                className="hover:text-[#C53030] hover:bg-[#FFD9D1] text-white bg-[#E63946] p-2 rounded-md mr-8"
+              >
+                Restaurantes
+              </Link>
+              {/* Este es el botón que controla la visibilidad del menú */}
+              <button
+                onClick={() => setIsOpen(!isOpen)}
+                className="ml-2 p-0 rounded-md text-[#C53030] hover:bg-[#E63946] focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+              >
+                <MenuIcon />
+              </button>
+            </div>
           )}
         </div>
       </div>

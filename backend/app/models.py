@@ -27,6 +27,7 @@ class Restaurante(Base):
     ciudad: Mapped[str] = mapped_column(String(30))
     direccion: Mapped[str] = mapped_column(String(200))
     telefono: Mapped[str] = mapped_column(String(15))
+    imagen: Mapped[str] = mapped_column(String(255))
 
     pedidos: Mapped[List['Pedidos']] = relationship('Pedidos', back_populates='restaurante')
 

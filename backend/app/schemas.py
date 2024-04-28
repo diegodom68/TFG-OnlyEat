@@ -18,11 +18,31 @@ class TokenData(BaseModel):
 
 class UserInDB(User):
     password: str
-    
+
+
+class Restaurante(BaseModel):
+    cif: str
+    email: Union[str, None] = None
+    nombre: Union[str, None] = None
+    direccion: Union[str, None] = None
+    telefono: Union[str, None] = None
+    cp: Union[int, None] = None
+    ciudad: Union[str, None] = None
+    imagen: Union[str, None] = None
+
+
+class RestauranteInDB(Restaurante):
+    password: str
+
+class RestauranteDisplay(Restaurante):
+    id_restaurante: int
 
 
 class Userread(User):
     id_usuario: int
+    
+
+
 
 
 
