@@ -13,7 +13,7 @@ function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <nav className="bg-[#FFF8F0] w-full fixed top-0 left-0 h-14 shadow-lg rounded">
+    <nav className="bg-[#FFF8F0] relative w-full top-0 left-0  h-14 shadow-lg rounded z-10">
       <div className="flex justify-between w-full px-4">
         <div className="flex items-center">
           <Link to="/">
