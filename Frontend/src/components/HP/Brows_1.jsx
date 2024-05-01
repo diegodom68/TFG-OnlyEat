@@ -1,4 +1,4 @@
-import AddressSearch from "./AdressSearch";
+import AddressSearch from "./Searchhome";
 
 function Brows_1() {
   return (
@@ -11,7 +11,7 @@ function Brows_1() {
           Restaurantes y tiendas de alimentación que realizan entregas cerca de
           ti
         </p>
-        <AddressSearch apikey="" />
+        <AddressSearch />
       </div>
     </div>
   );

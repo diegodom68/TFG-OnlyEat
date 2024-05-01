@@ -1,6 +1,6 @@
 from fastapi import  FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from .routers import users , users_jwt , restaurantes
+from .routers import users , users_jwt , restaurantes , productos
 from . import models
 from .database import SessionLocal, engine
 
@@ -31,6 +31,7 @@ app.add_middleware(
 
 app.include_router(users_jwt.router)
 app.include_router(restaurantes.router)
+app.include_router(productos.router)
 
 
 

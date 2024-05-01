@@ -5,18 +5,26 @@ import LoginPage from "./pages/LoginPage";
 import SignUp from "./pages/SignUp";
 import Usuarios from "./pages/usuarios";
 import Restaurant from "./pages/restaurant";
+import Products from "./pages/products";
+import { SearchProvider } from "./components/context/searchcontext";
 
 function App() {
   return (
-    <Router>
-      <Routes>
-        <Route path="/user" element={<Usuarios />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/signup" element={<SignUp />} />
-        <Route exact path="/" element={<HomePage />} />
-        <Route path="/restaurant" element={<Restaurant />} />
-      </Routes>
-    </Router>
+    <SearchProvider>
+      <Router>
+        <Routes>
+          <Route path="/user" element={<Usuarios />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route exact path="/" element={<HomePage />} />
+          <Route path="/restaurant" element={<Restaurant />} />
+          <Route
+            path="/restaurant/:id_restaurante/productos"
+            element={<Products />}
+          />
+        </Routes>
+      </Router>
+    </SearchProvider>
   );
 }
 
