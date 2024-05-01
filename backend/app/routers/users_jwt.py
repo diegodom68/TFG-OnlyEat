@@ -10,7 +10,7 @@ from passlib.context import CryptContext
 
 SECRET_KEY = "8bd4ae40db652c6a1255021bd221e55205bc4f421be3242a65a3fe4dc84372ef"
 ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 30
+ACCESS_TOKEN_EXPIRE_MINUTES = 60
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
