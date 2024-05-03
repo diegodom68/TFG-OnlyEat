@@ -1,7 +1,7 @@
 from typing import List, Optional
 
 from sqlalchemy import Date, DateTime, ForeignKeyConstraint, Index, String
-from sqlalchemy.dialects.mysql import INTEGER, LONGTEXT
+from sqlalchemy.dialects.mysql import INTEGER
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 import datetime
 
@@ -33,6 +33,15 @@ class Restaurante(Base):
     productos: Mapped[List['Productos']] = relationship('Productos', back_populates='restaurante')
 
 
+class TiposProducto(Base):
+    __tablename__ = 'tipos_producto'
+
+    id_tipo_prod: Mapped[int] = mapped_column(INTEGER(255), primary_key=True)
+    nombre_tipo: Mapped[str] = mapped_column(String(55))
+
+    productos: Mapped[List['Productos']] = relationship('Productos', back_populates='tipos_producto')
+
+
 class Users(Base):
     __tablename__ = 'users'
     __table_args__ = (
@@ -60,8 +69,8 @@ class Users(Base):
 class Pedidos(Base):
     __tablename__ = 'pedidos'
     __table_args__ = (
-        ForeignKeyConstraint(['id_restaurante'], ['restaurante.id_restaurante'], name='pedidos_ibfk_3'),
         ForeignKeyConstraint(['id_restaurante'], ['restaurante.id_restaurante'], name='pedidos_ibfk_2'),
+        ForeignKeyConstraint(['id_restaurante'], ['restaurante.id_restaurante'], name='pedidos_ibfk_3'),
         ForeignKeyConstraint(['id_usuario'], ['users.id_usuario'], name='pedidos_ibfk_1'),
         Index('id_restaurante', 'id_restaurante'),
         Index('id_usuario', 'id_usuario'),
@@ -83,6 +92,8 @@ class Productos(Base):
     __tablename__ = 'productos'
     __table_args__ = (
         ForeignKeyConstraint(['id_restaurante'], ['restaurante.id_restaurante'], name='productos_ibfk_1'),
+        ForeignKeyConstraint(['id_tipo_prod'], ['tipos_producto.id_tipo_prod'], name='FK_ID_TIPO_PROD'),
+        Index('FK_ID_TIPO_PROD', 'id_tipo_prod'),
         Index('id_restaurante', 'id_restaurante')
     )
 
@@ -90,6 +101,8 @@ class Productos(Base):
     nombre_producto: Mapped[str] = mapped_column(String(50))
     imagen_prod: Mapped[str] = mapped_column(String(255))
     id_restaurante: Mapped[int] = mapped_column(INTEGER(11))
-    comentarios: Mapped[Optional[str]] = mapped_column(LONGTEXT)
+    id_tipo_prod: Mapped[int] = mapped_column(INTEGER(255))
+    comentarios: Mapped[Optional[str]] = mapped_column(String(255))
 
     restaurante: Mapped['Restaurante'] = relationship('Restaurante', back_populates='productos')
+    tipos_producto: Mapped['TiposProducto'] = relationship('TiposProducto', back_populates='productos')

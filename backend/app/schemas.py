@@ -53,6 +53,11 @@ class ProductosDisplay(Productos):
     id_restaurante: int
 
 
+class TipoProducto(BaseModel):
+    id_tipo_prod: int
+    nombre_tipo: Union[str, None] = None
+    
+
 
 
 
