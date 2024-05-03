@@ -70,6 +70,7 @@ const AddressSearch = () => {
               className="p-2 hover:bg-gray-100 cursor-pointer border-b-2"
               onClick={() => handleSuggestionClick(item.id_restaurante)}
             >
+              <SearchIcon className="text-gray-500 mx-2" />
               {item.nombre}
             </li>
           ))}
