@@ -103,6 +103,6 @@ class Productos(Base):
     id_restaurante: Mapped[int] = mapped_column(INTEGER(11))
     id_tipo_prod: Mapped[int] = mapped_column(INTEGER(255))
     comentarios: Mapped[Optional[str]] = mapped_column(String(255))
-
+    precio: Mapped[float] = mapped_column(INTEGER(10))
     restaurante: Mapped['Restaurante'] = relationship('Restaurante', back_populates='productos')
     tipos_producto: Mapped['TiposProducto'] = relationship('TiposProducto', back_populates='productos')

@@ -47,6 +47,7 @@ class Productos(BaseModel):
     nombre_producto: str
     comentarios: Union[str, None] = None
     imagen_prod: Union[str, None] = None
+    precio: float
 
 class ProductosDisplay(Productos):
     id_producto: int

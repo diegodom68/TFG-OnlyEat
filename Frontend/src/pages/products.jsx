@@ -4,6 +4,7 @@ import Navbar from "../components/HP/Navbar";
 import { Link, useParams } from "react-router-dom";
 import RestaurantInfo from "../components/restaurant/RestaurantInfo";
 import SearchProduct from "../components/products/SearchProduct";
+import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 
 export default function Products() {
   const { id_restaurante } = useParams();
@@ -51,34 +52,39 @@ export default function Products() {
         <div className="flex flex-col items-center justify-center py-4">
           <div className="w-3/4">
             <SearchProduct onSearch={handleSearch} />
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {filteredProducts.map(
-                (
-                  product // Asegúrate de usar filteredProducts aquí
-                ) => (
-                  <Link
-                    to={`/productos/${product.id_producto}`}
-                    key={product.id_producto}
-                    className="hover:opacity-80 transition-opacity duration-300"
-                  >
-                    <div className="rounded overflow-hidden shadow-lg bg-white hover:shadow-xl transition-shadow duration-300 w-full h-full">
+            <div className="flex flex-wrap -mx-2">
+              {filteredProducts.map((product) => (
+                <div key={product.id_producto} className="w-full md:w-1/2 p-2">
+                  <div className="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
+                    <div className="flex items-center">
                       <img
-                        className="w-full h-48 object-cover object-center"
                         src={product.imagen_prod}
                         alt={product.nombre_producto}
+                        className="w-48 h-48 object-cover"
                       />
-                      <div className="p-4">
-                        <div className="font-bold text-xl mb-2">
-                          {product.nombre_producto}
+                      <div className="p-4 flex flex-col justify-between flex-grow">
+                        <div>
+                          <h3 className="font-bold text-lg">
+                            {product.nombre_producto}
+                          </h3>
+                          <p className="text-gray-500">{product.precio} €</p>
+                          <p className="text-sm text-gray-700">
+                            {product.descripcion}
+                          </p>
                         </div>
-                        <p className="text-gray-700 text-base">
-                          {product.comentarios}
-                        </p>
+                        <div className="flex items-center justify-between mt-4">
+                          <span className="text-xs font-semibold text-red-600 bg-red-100 py-1 px-2 rounded-full">
+                            Popular
+                          </span>
+                          <button className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-full">
+                            <AddShoppingCartIcon />
+                          </button>
+                        </div>
                       </div>
                     </div>
-                  </Link>
-                )
-              )}
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
