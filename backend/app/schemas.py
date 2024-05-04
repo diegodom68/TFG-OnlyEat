@@ -48,16 +48,17 @@ class Productos(BaseModel):
     comentarios: Union[str, None] = None
     imagen_prod: Union[str, None] = None
     precio: float
-
-class ProductosDisplay(Productos):
-    id_producto: int
-    id_restaurante: int
+    id_tipo_prod: int
 
 
 class TipoProducto(BaseModel):
     id_tipo_prod: int
     nombre_tipo: Union[str, None] = None
-    
+
+class ProductosDisplay(Productos):
+    id_producto: int
+    id_restaurante: int
+    tipo_producto: TipoProducto
 
 
 

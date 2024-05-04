@@ -27,7 +27,10 @@ const TiposProductos = () => {
     <div className=" ml-16 text-white">
       <ul className="flex ">
         {tiposProductos.map((tipo) => (
-          <li key={tipo.id_tipo_prod} className="mx-2">
+          <li
+            key={tipo.id_tipo_prod}
+            className="mx-2 hover:bg-[#E63946] hover:text-black px-2 py-1 rounded-lg cursor-pointer transition-colors duration-300 ease-in-out"
+          >
             {tipo.nombre_tipo}
           </li>
         ))}

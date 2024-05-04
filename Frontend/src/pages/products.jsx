@@ -19,14 +19,18 @@ export default function Products() {
         const productResponse = await axios.get(
           `http://localhost:8000/restaurantes/${id_restaurante}/productos`
         );
-        setProducts(productResponse.data);
-        setFilteredProducts(productResponse.data); // Asegura que los productos filtrados se inicialicen
-        console.log("Productos:", productResponse.data);
+        const productsByType = productResponse.data.reduce((acc, product) => {
+          const type = product.nombre_tipo; // Cambia 'tipo_producto' según la propiedad real
+          if (!acc[type]) {
+            acc[type] = [];
+          }
+          acc[type].push(product);
+          return acc;
+        }, {});
+        setProducts(productsByType);
+        setFilteredProducts(productsByType);
       } catch (error) {
-        console.error(
-          "Error al obtener los productos y la información del restaurante:",
-          error
-        );
+        console.error("Error al obtener los productos:", error);
       }
     };
 
@@ -37,9 +41,14 @@ export default function Products() {
     if (!searchTerm) {
       setFilteredProducts(products);
     } else {
-      const filtered = products.filter((product) =>
-        product.nombre_producto.toLowerCase().includes(searchTerm.toLowerCase())
-      );
+      const filtered = Object.keys(products).reduce((acc, type) => {
+        acc[type] = products[type].filter((product) =>
+          product.nombre_producto
+            .toLowerCase()
+            .includes(searchTerm.toLowerCase())
+        );
+        return acc;
+      }, {});
       setFilteredProducts(filtered);
     }
   };
@@ -48,44 +57,55 @@ export default function Products() {
     <>
       <Navbar />
       <main className="w-full h-full bg-slate-100">
+        <Navbar />
         <RestaurantInfo />
         <div className="flex flex-col items-center justify-center py-4">
           <div className="w-3/4">
             <SearchProduct onSearch={handleSearch} />
-            <div className="flex flex-wrap -mx-2">
-              {filteredProducts.map((product) => (
-                <div key={product.id_producto} className="w-full md:w-1/2 p-2">
-                  <div className="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
-                    <div className="flex items-center">
-                      <img
-                        src={product.imagen_prod}
-                        alt={product.nombre_producto}
-                        className="w-48 h-48 object-cover"
-                      />
-                      <div className="p-4 flex flex-col justify-between flex-grow">
-                        <div>
-                          <h3 className="font-bold text-lg">
-                            {product.nombre_producto}
-                          </h3>
-                          <p className="text-gray-500">{product.precio} €</p>
-                          <p className="text-sm text-gray-700">
-                            {product.descripcion}
-                          </p>
-                        </div>
-                        <div className="flex items-center justify-between mt-4">
-                          <span className="text-xs font-semibold text-red-600 bg-red-100 py-1 px-2 rounded-full">
-                            Popular
-                          </span>
-                          <button className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-full">
-                            <AddShoppingCartIcon />
-                          </button>
+            {Object.keys(filteredProducts).map((type) => (
+              <div key={type}>
+                <h2 className="text-xl font-bold mb-3">{type}</h2>
+                <div className="flex flex-wrap -mx-2">
+                  {filteredProducts[type].map((product) => (
+                    <div
+                      key={product.id_producto}
+                      className="w-full md:w-1/2 p-2"
+                    >
+                      <div className="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
+                        <div className="flex items-center">
+                          <img
+                            src={product.imagen_prod}
+                            alt={product.nombre_producto}
+                            className="w-48 h-48 object-cover"
+                          />
+                          <div className="p-4 flex flex-col justify-between flex-grow">
+                            <div>
+                              <h3 className="font-bold text-lg">
+                                {product.nombre_producto}
+                              </h3>
+                              <p className="text-gray-500">
+                                {product.precio} €
+                              </p>
+                              <p className="text-sm text-gray-700">
+                                {product.descripcion}
+                              </p>
+                            </div>
+                            <div className="flex items-center justify-between mt-4">
+                              <span className="text-xs font-semibold text-red-600 bg-red-100 py-1 px-2 rounded-full">
+                                Popular
+                              </span>
+                              <button className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-full">
+                                <AddShoppingCartIcon />
+                              </button>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
+                  ))}
                 </div>
-              ))}
-            </div>
+              </div>
+            ))}
           </div>
         </div>
       </main>
