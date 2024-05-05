@@ -43,11 +43,15 @@ export default function Products() {
       setFilteredProducts(products);
     } else {
       const filtered = Object.keys(products).reduce((acc, type) => {
-        acc[type] = products[type].filter((product) =>
+        const filteredProducts = products[type].filter((product) =>
           product.nombre_producto
             .toLowerCase()
             .includes(searchTerm.toLowerCase())
         );
+        // Añade al acumulador solo si hay productos filtrados en este tipo
+        if (filteredProducts.length > 0) {
+          acc[type] = filteredProducts;
+        }
         return acc;
       }, {});
       setFilteredProducts(filtered);
