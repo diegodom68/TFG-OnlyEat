@@ -15,7 +15,7 @@ def get_productos_por_tipo(restaurante_id: int, tipo_id: int, db: Session):
     return db.query(models.Producto).filter(models.Producto.restaurante_id == restaurante_id, models.Producto.tipo_id == tipo_id).all()
 
 
-@router.get("/tiposprod/{restaurante_id}", response_model=List[schemas.TipoProducto])
+@router.get("/tiposprod/{restaurante_id}", response_model=List[schemas.TipoProductoDisplay])
 def read_tipos_por_restaurante(restaurante_id: int, db: Session = Depends(get_db)):
     tipos = get_tipos_por_restaurante(db, restaurante_id=restaurante_id)
     if not tipos:

@@ -21,7 +21,7 @@ def get_current_restaurant(id_restautante: int, db: Session = Depends(get_db)):
 def get_productos(id_restaurante: int, skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     productos = (
         db.query(models.Productos)
-        .options(joinedload(models.TiposProducto.id_tipo_prod))
+        .options(joinedload(models.Productos.tipos_producto))  # Usa el nombre correcto de la relación
         .filter(models.Productos.id_restaurante == id_restaurante)
         .order_by(models.Productos.id_tipo_prod.asc())
         .offset(skip)
@@ -29,5 +29,5 @@ def get_productos(id_restaurante: int, skip: int = 0, limit: int = 100, db: Sess
         .all()
     )
     if productos:
-        return productos 
+        return productos
     raise HTTPException(status_code=404, detail="Productos no encontrados")

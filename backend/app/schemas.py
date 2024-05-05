@@ -51,14 +51,18 @@ class Productos(BaseModel):
     id_tipo_prod: int
 
 
-class TipoProducto(BaseModel):
+class TipoProductoDisplay(BaseModel):
     id_tipo_prod: int
-    nombre_tipo: Union[str, None] = None
+    nombre_tipo: str
 
-class ProductosDisplay(Productos):
+class ProductosDisplay(BaseModel):
     id_producto: int
+    nombre_producto: str
+    imagen_prod: str
+    precio: float
     id_restaurante: int
-    tipo_producto: TipoProducto
+    tipos_producto: TipoProductoDisplay
+    
 
 
 

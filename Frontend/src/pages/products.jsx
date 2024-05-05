@@ -20,13 +20,14 @@ export default function Products() {
           `http://localhost:8000/restaurantes/${id_restaurante}/productos`
         );
         const productsByType = productResponse.data.reduce((acc, product) => {
-          const type = product.nombre_tipo; // Cambia 'tipo_producto' según la propiedad real
+          const type = product.tipos_producto.nombre_tipo; // Cambia 'tipo_producto' según la propiedad real
           if (!acc[type]) {
             acc[type] = [];
           }
           acc[type].push(product);
           return acc;
         }, {});
+        console.log("Data products: ", productsByType);
         setProducts(productsByType);
         setFilteredProducts(productsByType);
       } catch (error) {
@@ -57,7 +58,6 @@ export default function Products() {
     <>
       <Navbar />
       <main className="w-full h-full bg-slate-100">
-        <Navbar />
         <RestaurantInfo />
         <div className="flex flex-col items-center justify-center py-4">
           <div className="w-3/4">
