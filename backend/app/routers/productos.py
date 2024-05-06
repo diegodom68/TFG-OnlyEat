@@ -2,7 +2,7 @@ from ..database import get_db
 from typing import List
 from fastapi import APIRouter , HTTPException, Depends , status
 from sqlalchemy.orm import Session , joinedload
-from .. import crud, schemas , models
+from .. import  schemas , models
 
 router = APIRouter( tags=["Productos"])
 

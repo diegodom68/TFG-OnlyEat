@@ -16,8 +16,9 @@ class TokenData(BaseModel):
     username: str | None = None
 
 
-class UserInDB(User):
+class UserCreate(User):
     password: str
+
 
 
 class Restaurante(BaseModel):

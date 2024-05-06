@@ -2,7 +2,7 @@ from fastapi import APIRouter , HTTPException, Depends , status
 from sqlalchemy.orm import Session
 from datetime import datetime,timezone, timedelta
 from typing import Union , Annotated
-from .. import crud, schemas , models
+from .. import  schemas , models
 from ..database import get_db
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from jose import JWTError, jwt
@@ -32,7 +32,7 @@ def get_user(db: Session, username: str) -> Union[schemas.User, None]:
     user = db.query(models.Users).filter(models.Users.username == username).first()
     if user:
         print(user)
-        return schemas.UserInDB(**user.__dict__)
+        return schemas.UserCreate(**user.__dict__)
     return None
 
 
@@ -69,6 +69,27 @@ async def get_current_active_user(current_user: Annotated[models.Users, Depends(
     return current_user
 
 
+
+@router.post("/users/", response_model=schemas.User)
+def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
+    # Verificar si el email o username ya están registrados
+    existing_user = db.query(models.Users).filter((models.Users.email == user.email) | (models.Users.username == user.username)).first()
+    if existing_user:
+        raise HTTPException(status_code=400, detail="Email or Username already registered")
+    
+    # Crear nuevo usuario
+    hashed_password = pwd_context.hash(user.password)
+    db_user = models.Users(
+        nombre=user.nombre,
+        apellido=user.apellido,
+        email=user.email,
+        username=user.username,
+        password=hashed_password  # Asegúrate de que el modelo en la base de datos use `hashed_password`
+    )
+    db.add(db_user)
+    db.commit()
+    db.refresh(db_user)
+    return db_user
 
 
 @router.post("/token", response_model=dict)

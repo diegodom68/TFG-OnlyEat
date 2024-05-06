@@ -1,93 +1,149 @@
-import { Link } from "react-router-dom";
-import { useNavigate } from 'react-router-dom';
-
-import React, { useState } from 'react';
-import axios from 'axios';
-
+import React from "react";
+import { useForm } from "react-hook-form";
+import { motion } from "framer-motion";
+import axios from "axios";
+import { useNavigate, Link } from "react-router-dom";
 
 export default function SignUp() {
-  
-    const [userData, setUserData] = useState({
-        nombre: '',
-        apellido: '',
-        password: '',
-        email: '',
-    });
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+  const navigate = useNavigate();
 
-    const handleChange = (e) => {
-      const { name, value } = e.target; // Extraemos name y value del evento target
-      setUserData(prevState => ({
-          ...prevState,
-          [name]: value
-      }));
+  const onSubmit = (data) => {
+    axios
+      .post("http://localhost:8000/users/", data)
+      .then((response) => {
+        console.log("User created:", response.data);
+        navigate("/");
+      })
+      .catch((error) => {
+        console.error("There was an error creating the user:", error);
+      });
   };
-    const navigate = useNavigate();
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        axios.post('http://localhost:8000/users/', userData)
-            .then(response => {
-                console.log('User created:', response.data);
-                console.log(userData);
-                navigate('/');
-                // Aquí puedes redirigir al usuario o limpiar el formulario, etc.
-            })
-            .catch(error => {
-                console.error('There was an error creating the user:', error);
-            });
-    };
 
-    return (
-        <div className="flex flex-col h-screen justify-center items-center bg-[#F7F7F7]">
-        <div className="bg-[#C53030] rounded-lg p-8 w-2/6">
-          <h1 className="text-4xl text-white text-center mb-6">
+  return (
+    <div className="flex flex-col h-screen justify-center items-center bg-gray-100">
+      <div className="bg-red-500 rounded-lg p-8 w-full max-w-md">
+        <h1 className="text-4xl text-white text-center mb-6">Crear Cuenta</h1>
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="flex flex-col items-center space-y-4"
+        >
+          <motion.input
+            initial={{ x: "-100vw" }}
+            animate={{ x: 0 }}
+            transition={{ type: "spring", stiffness: 120 }}
+            type="text"
+            placeholder="Nombre"
+            className="w-full max-w-xs h-10 rounded-md p-2"
+            {...register("nombre", {
+              required: "El nombre es obligatorio",
+              pattern: {
+                value: /^[A-Za-záéíóúÁÉÍÓÚñÑ ]+$/,
+                message: "El nombre solo puede contener letras y espacios",
+              },
+            })}
+          />
+          {errors.nombre && (
+            <p className="text-black ">{errors.nombre.message}</p>
+          )}
+
+          <motion.input
+            initial={{ x: "100vw" }}
+            animate={{ x: 0 }}
+            transition={{ type: "spring", stiffness: 120 }}
+            type="text"
+            placeholder="Apellidos"
+            className="w-full max-w-xs h-10 rounded-md p-2"
+            {...register("apellidos", {
+              required: "Los apellidos son obligatorios",
+              pattern: {
+                value: /^[A-Za-záéíóúÁÉÍÓÚñÑ ]+$/,
+                message: "Los apellidos solo pueden contener letras y espacios",
+              },
+            })}
+          />
+          {errors.apellidos && (
+            <p className="text-black ">{errors.apellidos.message}</p>
+          )}
+
+          <motion.input
+            initial={{ x: "-100vw" }}
+            animate={{ x: 0 }}
+            transition={{ type: "spring", stiffness: 120 }}
+            type="email"
+            placeholder="Email"
+            className="w-full max-w-xs h-10 rounded-md p-2"
+            {...register("email", {
+              required: "El email es obligatorio",
+              pattern: {
+                value: /^[a-zA-Z0-9.@]+$/,
+                message:
+                  "El email solo puede contener letras, números y puntos.",
+              },
+            })}
+          />
+          {errors.email && (
+            <p className="text-black ">{errors.email.message}</p>
+          )}
+
+          <motion.input
+            initial={{ x: "100vw" }}
+            animate={{ x: 0 }}
+            transition={{ type: "spring", stiffness: 120 }}
+            type="text"
+            placeholder="Nombre de usuario"
+            className="w-full max-w-xs h-10 rounded-md p-2"
+            {...register("username", {
+              required: "El nombre de usuario es obligatorio",
+              minLength: {
+                value: 4,
+                message:
+                  "El nombre de usuario debe tener al menos 4 caracteres",
+              },
+              pattern: {
+                value: /^[a-zA-Z0-9.-_]+$/,
+                message:
+                  "El usuario solo puede contener letras, números y guiones.",
+              },
+            })}
+          />
+          {errors.username && (
+            <p className="text-black ">{errors.username.message}</p>
+          )}
+
+          <motion.input
+            initial={{ x: "-100vw" }}
+            animate={{ x: 0 }}
+            transition={{ type: "spring", stiffness: 120 }}
+            type="password"
+            placeholder="Contraseña"
+            className="w-full max-w-xs h-10 rounded-md p-2"
+            {...register("password", {
+              required: "La contraseña es obligatoria",
+              minLength: {
+                value: 6,
+                message: "La contraseña debe tener al menos 6 caracteres",
+              },
+            })}
+          />
+          {errors.password && (
+            <p className="text-black ">{errors.password.message}</p>
+          )}
+
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            type="submit"
+            className="w-full max-w-xs h-10 bg-white rounded-md text-red-500 hover:bg-red-600 hover:text-white"
+          >
             Crear Cuenta
-          </h1>
-          <form onSubmit={handleSubmit} className="flex flex-col items-center space-y-4">
-            <input
-              type="text"
-              name="nombre"
-              value={userData.nombre}
-              placeholder="Nombre"
-              onChange={handleChange}
-              className="w-full max-w-xs h-10 rounded-md p-2"
-            />
-            <input
-              type="text"
-              name="apellidos"
-              value={userData.apellidos}
-              placeholder="Apellido"
-              onChange={handleChange}
-              className="w-full max-w-xs h-10 rounded-md p-2"
-            />
-            <input
-              type="email"
-              name="email"
-              value={userData.email}
-              placeholder="Email"
-              onChange={handleChange}
-              className="w-full max-w-xs h-10 rounded-md p-2"
-            />
-            <input
-              type="password"
-              name="password"
-              value={userData.password}
-              placeholder="Contraseña"
-              onChange={handleChange}
-              className="w-full max-w-xs h-10 rounded-md p-2"
-            />
-            <button type="submit" className="w-full max-w-xs h-10 bg-[#FFF8F0] rounded-md hover:bg-[#FF7B72]">
-              Crear Cuenta
-            </button>
-            <p className="text-white pt-4">¿Ya tienes una Cuenta?  <Link to='/login' className="underline">Iniciar Sesión</Link></p>
-          </form>
-          <br />
-          <hr />
-          <p className="text-white text-sm text-center mt-4 px-2">
-            Al crear la cuenta, aceptas nuestros términos y condiciones. Por
-            favor, lee nuestra política de privacidad y nuestra política de
-            cookies.
-          </p>
-        </div>
+          </motion.button>
+        </form>
       </div>
-    );
+    </div>
+  );
 }
