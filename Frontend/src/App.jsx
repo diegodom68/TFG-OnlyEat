@@ -6,25 +6,30 @@ import SignUp from "./pages/SignUp";
 import Usuarios from "./pages/usuarios";
 import Restaurant from "./pages/restaurant";
 import Products from "./pages/products";
+import { CartProvider } from "./components/context/CartContext";
 import { SearchProvider } from "./components/context/searchcontext";
+import Cart from "./components/products/Cart";
 
 function App() {
   return (
-    <SearchProvider>
-      <Router>
-        <Routes>
-          <Route path="/user" element={<Usuarios />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/signup" element={<SignUp />} />
-          <Route exact path="/" element={<HomePage />} />
-          <Route path="/restaurant" element={<Restaurant />} />
-          <Route
-            path="/restaurant/:id_restaurante/productos"
-            element={<Products />}
-          />
-        </Routes>
-      </Router>
-    </SearchProvider>
+    <CartProvider>
+      <SearchProvider>
+        <Router>
+          <Routes>
+            <Route path="/user" element={<Usuarios />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/signup" element={<SignUp />} />
+            <Route exact path="/" element={<HomePage />} />
+            <Route path="/restaurant" element={<Restaurant />} />
+            <Route path="/cart" element={<Cart />} />
+            <Route
+              path="/restaurant/:id_restaurante/productos"
+              element={<Products />}
+            />
+          </Routes>
+        </Router>
+      </SearchProvider>
+    </CartProvider>
   );
 }
 

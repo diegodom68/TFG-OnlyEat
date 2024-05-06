@@ -34,6 +34,12 @@ function Navbar() {
               >
                 Restaurantes
               </Link>
+              <Link
+                to="/cart"
+                className="hover:text-[#C53030] hover:bg-[#FFD9D1] text-white bg-[#E63946] p-2 rounded-md mr-8"
+              >
+                Carrito
+              </Link>
               {/* Este es el botón que controla la visibilidad del menú */}
               <button
                 onClick={() => setIsOpen(!isOpen)}

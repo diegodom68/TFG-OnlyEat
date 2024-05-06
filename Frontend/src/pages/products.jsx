@@ -1,15 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import Navbar from "../components/HP/Navbar";
 import { Link, useParams } from "react-router-dom";
 import RestaurantInfo from "../components/restaurant/RestaurantInfo";
 import SearchProduct from "../components/products/SearchProduct";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
+import { CartContext } from "../components/context/CartContext";
+import Cart from "../components/products/Cart";
 
 export default function Products() {
   const { id_restaurante } = useParams();
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
+  const { cartItems, addToCart } = useContext(CartContext);
 
   console.log(id_restaurante);
 
@@ -61,6 +64,7 @@ export default function Products() {
   return (
     <>
       <Navbar />
+
       <main className="w-full h-full bg-slate-100">
         <RestaurantInfo />
         <div className="flex flex-col items-center justify-center py-4">
@@ -98,7 +102,10 @@ export default function Products() {
                               <span className="text-xs font-semibold text-red-600 bg-red-100 py-1 px-2 rounded-full">
                                 Popular
                               </span>
-                              <button className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-full">
+                              <button
+                                onClick={() => addToCart(product)}
+                                className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-full"
+                              >
                                 <AddShoppingCartIcon />
                               </button>
                             </div>
