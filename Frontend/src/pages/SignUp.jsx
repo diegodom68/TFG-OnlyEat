@@ -142,6 +142,12 @@ export default function SignUp() {
           >
             Crear Cuenta
           </motion.button>
+          <p className="text-white pt-4">
+            ¿Ya tienes una cuenta?{" "}
+            <Link to="/login" className="underline">
+              Inicia Sesión
+            </Link>
+          </p>
         </form>
       </div>
     </div>

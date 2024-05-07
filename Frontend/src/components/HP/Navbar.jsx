@@ -3,6 +3,7 @@ import logo from "../../images/Cat-onlyeat.png";
 import MenuIcon from "@mui/icons-material/Menu";
 import { Link } from "react-router-dom";
 import ButtonAccount from "../buttons/button_account";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 
 function isAuthenticated() {
   // Devuelve true si "authToken" existe en sessionStorage, de lo contrario false
@@ -38,7 +39,7 @@ function Navbar() {
                 to="/cart"
                 className="hover:text-[#C53030] hover:bg-[#FFD9D1] text-white bg-[#E63946] p-2 rounded-md mr-8"
               >
-                Carrito
+                <ShoppingCartIcon />
               </Link>
               {/* Este es el botón que controla la visibilidad del menú */}
               <button
