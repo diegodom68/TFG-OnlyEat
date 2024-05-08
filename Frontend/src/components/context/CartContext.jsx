@@ -12,11 +12,11 @@ export const CartProvider = ({ children }) => {
   const addToCart = (item) => {
     setCartItems((prevItems) => {
       const existingItem = prevItems.find(
-        (cartItem) => cartItem.id === item.id_producto
+        (cartItem) => cartItem.id_producto === item.id_producto
       );
       if (existingItem) {
         return prevItems.map((cartItem) =>
-          cartItem.id === item.id_producto
+          cartItem.id_producto === item.id_producto
             ? { ...cartItem, quantity: cartItem.quantity + 1 }
             : cartItem
         );
@@ -27,23 +27,25 @@ export const CartProvider = ({ children }) => {
   };
 
   const removeFromCart = (item) => {
-    const isItemInCart = cartItems.find(
-      (cartItem) => cartItem.id === item.id_producto
-    );
-
-    if (isItemInCart.quantity === 1) {
-      setCartItems(
-        cartItems.filter((cartItem) => cartItem.id !== item.id_producto)
+    setCartItems((prevItems) => {
+      const existingItem = prevItems.find(
+        (cartItem) => cartItem.id_producto === item.id_producto
       );
-    } else {
-      setCartItems(
-        cartItems.map((cartItem) =>
-          cartItem.id === item.id_producto
-            ? { ...cartItem, quantity: cartItem.quantity - 1 }
-            : cartItem
-        )
-      );
-    }
+      if (existingItem) {
+        if (existingItem.quantity === 1) {
+          return prevItems.filter(
+            (cartItem) => cartItem.id_producto !== item.id_producto
+          );
+        } else {
+          return prevItems.map((cartItem) =>
+            cartItem.id_producto === item.id_producto
+              ? { ...cartItem, quantity: cartItem.quantity - 1 }
+              : cartItem
+          );
+        }
+      }
+      return prevItems;
+    });
   };
 
   const clearCart = () => {
@@ -60,13 +62,6 @@ export const CartProvider = ({ children }) => {
   useEffect(() => {
     localStorage.setItem("cartItems", JSON.stringify(cartItems));
   }, [cartItems]);
-
-  useEffect(() => {
-    const cartItems = localStorage.getItem("cartItems");
-    if (cartItems) {
-      setCartItems(JSON.parse(cartItems));
-    }
-  }, []);
 
   return (
     <CartContext.Provider

@@ -23,7 +23,7 @@ function RestaurantList() {
   return (
     <>
       <Navbar />
-      <main className="w-full h-full bg-slate-100">
+      <main className="w-full min-h-screen bg-slate-100">
         <div className="flex flex-col items-center justify-center py-4">
           <div className="w-3/4">
             <input
