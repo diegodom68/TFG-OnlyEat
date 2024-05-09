@@ -9,6 +9,7 @@ import Products from "./pages/products";
 import { CartProvider } from "./components/context/CartContext";
 import { SearchProvider } from "./components/context/searchcontext";
 import Cart from "./components/products/Cart";
+import RestaurantLoginPage from "./pages/RestaurtantLoginPage";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
               path="/restaurant/:id_restaurante/productos"
               element={<Products />}
             />
+            <Route path="/restaurant-login" element={<RestaurantLoginPage />} />
           </Routes>
         </Router>
       </SearchProvider>

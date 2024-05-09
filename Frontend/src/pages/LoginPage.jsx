@@ -100,6 +100,18 @@ export default function LoginPage() {
               Crear una cuenta
             </Link>
           </p>
+          <p className=" text-xs text-white py-2 border-y ">
+            Al crear una cuenta, aceptas nuestros Términos y Condiciones. Lee
+            nuestra Política de Privacidad y Política de Cookies.
+          </p>
+          <div className="flex justify-center mt-6">
+            <Link
+              to="/loginrestaurant"
+              className="bg-[#657E7F] text-white p-2 shadow hover:shadow-xl rounded-md"
+            >
+              Inicio de Sesion para Restaurantes.
+            </Link>
+          </div>
         </form>
       </motion.div>
     </div>
