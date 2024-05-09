@@ -10,7 +10,7 @@ export default function HomePage() {
   return (
     <>
       <Navbar />
-      <div className="flex flex-row items-center  bg-[#F7F7F7] z-0">
+      <div className="flex flex-col md:flex-row items-center bg-[#F7F7F7] w-full">
         <Brows_1 />
         <Brows_2 />
       </div>
