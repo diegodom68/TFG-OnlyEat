@@ -2,11 +2,12 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Navbar from "../components/HP/Navbar";
 import { Link } from "react-router-dom";
-import { useSearch } from "../components/context/searchcontext"; // Asegúrate de que la ruta de importación es correcta
+import { useSearch } from "../components/context/searchcontext";
+import SearchIcon from "@mui/icons-material/Search";
 
 function RestaurantList() {
   const [restaurants, setRestaurants] = useState([]);
-  const { searchTerm, setSearchTerm } = useSearch(); // Extrae tanto searchTerm como setSearchTerm
+  const { searchTerm, setSearchTerm } = useSearch();
 
   useEffect(() => {
     const fetchRestaurants = async () => {
@@ -18,21 +19,24 @@ function RestaurantList() {
       }
     };
     fetchRestaurants();
-  }, []); // No incluyas searchTerm aquí si no quieres que los restaurantes se recarguen con cada cambio de término
+  }, []);
 
   return (
     <>
       <Navbar />
       <main className="w-full min-h-screen bg-slate-100">
-        <div className="flex flex-col items-center justify-center py-4">
+        <div className="flex felx-col items-center justify-center py-16">
           <div className="w-3/4">
-            <input
-              type="text"
-              placeholder="Buscar restaurantes..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="mb-4 p-2 w-full"
-            />
+            <div className="flex items-center mb-4">
+              <SearchIcon className="text-black mr-2" />
+              <input
+                type="text"
+                placeholder="Buscar restaurantes..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="p-2 w-full"
+              />
+            </div>
             <h1 className="text-2xl font-bold text-center my-4">
               Lista de Restaurantes
             </h1>

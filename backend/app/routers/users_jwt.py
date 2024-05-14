@@ -28,7 +28,7 @@ def create_acces_token(data: dict,expires_delta: timedelta = None):
     encode_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return encode_jwt
 
-def get_user(db: Session, username: str) -> Union[schemas.User, None]:
+def get_user(db: Session, username: str) -> Union[schemas.UserCreate, None]:
     user = db.query(models.Users).filter(models.Users.username == username).first()
     if user:
         print(user)

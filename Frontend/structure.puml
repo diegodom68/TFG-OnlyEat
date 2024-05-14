@@ -1,0 +1,87 @@
+@startuml OnlyEat
+package "Frontend" {
+  class ".eslintrc.cjs"
+  class ".gitignore"
+  class "index.html"
+  class "package-lock.json"
+  class "package.json"
+  class "postcss.config.js"
+  package "public" {
+    class "vite.svg"
+  }
+  package "src" {
+    class "App.css"
+    class "App.jsx"
+    package "assets" {
+      class "react.svg"
+    }
+    package "components" {
+      package "API" {}
+      package "buttons" {
+        class "button_account.jsx"
+      }
+      package "context" {
+        class "CartContext.jsx"
+        class "searchcontext.jsx"
+        class "SectionContext.jsx"
+      }
+      package "HP" {
+        class "Brows_1.jsx"
+        class "Brows_2.jsx"
+        class "CardsHowTo.jsx"
+        class "FooterHP.jsx"
+        class "howto.jsx"
+        class "Navbar.jsx"
+        class "OnlyPass.jsx"
+        class "Searchhome.jsx"
+        class "SectionHomePage.jsx"
+      }
+      package "OP" {}
+      package "products" {
+        class "Cart.jsx"
+        class "list_type_prod.jsx"
+        class "SearchProduct.jsx"
+      }
+      package "restaurant" {
+        class "RestaurantInfo.jsx"
+      }
+      package "routes" {}
+      package "sidebar" {
+        class "sidebar_config.jsx"
+      }
+    }
+    package "Hooks" {
+      class "GoogleScript.jsx"
+    }
+    package "images" {
+      class "Browsphoto.png"
+      class "BurgerIcon.svg"
+      class "Cat-onlyeat.png"
+      class "Cat-onlyeat2.png"
+      class "CommentIcon.svg"
+      class "MapIcon.svg"
+      class "MI.svg"
+      class "OrderIcon.svg"
+      class "pin.8136b8b1 (1).png"
+      class "Sostenible.png"
+      class "StarIcon.svg"
+    }
+    class "index.css"
+    class "main.jsx"
+    package "pages" {
+      class "HomePage.jsx"
+      class "LoginPage.jsx"
+      class "products.jsx"
+      class "restaurant.jsx"
+      class "RestaurtantLoginPage.jsx"
+      class "searchrestaurant.jsx"
+      class "SignUp.jsx"
+      class "usuarios.jsx"
+    }
+  }
+  class "structure.md"
+  class "structure.txt"
+  class "tailwind.config.js"
+  class "vite.config.js"
+}
+@enduml
