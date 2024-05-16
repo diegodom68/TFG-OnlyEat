@@ -2,21 +2,19 @@ from fastapi import  FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from .routers import  users_jwt , restaurantes , productos , tipos_prod
 from . import models
-from .database import SessionLocal, engine
-
+from .database import  engine
 
 models.Base.metadata.create_all(bind=engine)
 
-
 app = FastAPI()
 
+#Origenes permitidos
 origins = [
     "http://localhost:5173",
     "http://127.0.0.1:5173",
 ]
 
-
-
+#Politicas de acceso
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
@@ -25,10 +23,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-#Dependency
-
 ##Routers
-
 app.include_router(users_jwt.router)
 app.include_router(restaurantes.router)
 app.include_router(productos.router)

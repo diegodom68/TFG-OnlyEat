@@ -2,6 +2,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { motion } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../components/context/AuthContext";
 
 export default function LoginPage() {
   const {
@@ -10,6 +11,7 @@ export default function LoginPage() {
     formState: { errors },
   } = useForm();
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const onSubmit = async (data) => {
     const formData = new URLSearchParams();
@@ -27,8 +29,7 @@ export default function LoginPage() {
       const result = await response.json();
 
       if (response.ok) {
-        sessionStorage.setItem("authToken", result.access_token);
-        navigate("/");
+        login({ token: result.access_token });
       } else {
         throw new Error(
           result.message || "Ha ocurrido un error durante el inicio de sesión"
