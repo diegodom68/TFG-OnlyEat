@@ -5,15 +5,13 @@ import HowTo from "../components/HP/howto";
 import FeaturesSection from "../components/HP/SectionHomePage";
 import FooterHP from "../components/HP/FooterHP";
 import OnlyPass from "../components/HP/OnlyPass";
+import HeroSection from "../components/HP/HeroSection";
 
 export default function HomePage() {
   return (
     <>
       <Navbar />
-      <div className="flex flex-col md:flex-row items-center bg-[#F7F7F7] w-full">
-        <Brows_1 />
-        <Brows_2 />
-      </div>
+      <HeroSection />
       <HowTo />
       <OnlyPass />
       <FeaturesSection />
