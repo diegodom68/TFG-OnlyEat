@@ -30,3 +30,4 @@ def sugerencias_restaurantes(q: str, db: Session = Depends(get_db)):
     else:
         restaurantes = []
     return restaurantes
+

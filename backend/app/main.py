@@ -1,6 +1,6 @@
 from fastapi import  FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from .routers import  users_jwt , restaurantes , productos , tipos_prod
+from .routers import  users_jwt , restaurantes , productos , tipos_prod , restaurantauth
 from . import models
 from .database import  engine
 
@@ -28,6 +28,7 @@ app.include_router(users_jwt.router)
 app.include_router(restaurantes.router)
 app.include_router(productos.router)
 app.include_router(tipos_prod.router)
+app.include_router(restaurantauth.router)
 
 
 

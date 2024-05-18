@@ -58,7 +58,7 @@ export default function SignUp() {
             type="text"
             placeholder="Apellidos"
             className="w-full max-w-xs h-10 rounded-md p-2"
-            {...register("apellidos", {
+            {...register("apellido", {
               required: "Los apellidos son obligatorios",
               pattern: {
                 value: /^[A-Za-záéíóúÁÉÍÓÚñÑ ]+$/,
@@ -66,8 +66,8 @@ export default function SignUp() {
               },
             })}
           />
-          {errors.apellidos && (
-            <p className="text-black ">{errors.apellidos.message}</p>
+          {errors.apellido && (
+            <p className="text-black ">{errors.apellido.message}</p>
           )}
 
           <motion.input

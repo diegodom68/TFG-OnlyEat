@@ -4,6 +4,7 @@ import Navbar from "../components/HP/Navbar";
 import { Link } from "react-router-dom";
 import { useSearch } from "../components/context/searchcontext";
 import SearchIcon from "@mui/icons-material/Search";
+import BackArrow from "../components/buttons/BackArrow";
 
 function RestaurantList() {
   const [restaurants, setRestaurants] = useState([]);
@@ -25,6 +26,9 @@ function RestaurantList() {
     <>
       <Navbar />
       <main className="w-full min-h-screen bg-slate-100">
+        <div className="absolute top-16 left-4">
+          <BackArrow />
+        </div>
         <div className="flex felx-col items-center justify-center py-16">
           <div className="w-3/4">
             <div className="flex items-center mb-4">

@@ -57,7 +57,7 @@ function App() {
                 }
               />
               <Route
-                path="/restaurant-login"
+                path="/loginrestaurant"
                 element={
                   <ProtectedRoute>
                     <RestaurantLoginPage />

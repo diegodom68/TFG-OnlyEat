@@ -6,6 +6,7 @@ import RestaurantInfo from "../components/restaurant/RestaurantInfo";
 import SearchProduct from "../components/products/SearchProduct";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import { CartContext } from "../components/context/CartContext";
+import BackArrow from "../components/buttons/BackArrow";
 
 export default function Products() {
   const { id_restaurante } = useParams();
@@ -64,6 +65,9 @@ export default function Products() {
     <>
       <Navbar />
       <main className="w-full h-full bg-slate-100">
+        <div className="absolute top-16 left-4">
+          <BackArrow />
+        </div>
         <RestaurantInfo />
         <div className="flex flex-col items-center justify-center py-4">
           <div className="w-full max-w-screen-xl px-4">
