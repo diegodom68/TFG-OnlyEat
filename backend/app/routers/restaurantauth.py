@@ -28,8 +28,8 @@ def create_access_token(data: dict, expires_delta: timedelta = None):
     encode_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return encode_jwt
 
-def get_restaurant(db: Session, cif: str) -> Union[schemas.RestauranteInDB, None]:
-    restaurant = db.query(models.Restaurante).filter(models.Restaurante.cif == cif).first()
+def get_restaurant_by_email(db: Session, email: str) -> Union[schemas.RestauranteInDB, None]:
+    restaurant = db.query(models.Restaurante).filter(models.Restaurante.email == email).first()
     if restaurant:
         return schemas.RestauranteInDB(**restaurant.__dict__)
     return None
@@ -37,12 +37,12 @@ def get_restaurant(db: Session, cif: str) -> Union[schemas.RestauranteInDB, None
 def verify_password(plain_password, hashed_password):
     return pwd_context.verify(plain_password, hashed_password)
 
-def authenticate_restaurant(db: Session, cif: str, password: str):
-    restaurant = get_restaurant(db, cif)
+def authenticate_restaurant(db: Session, email: str, password: str):
+    restaurant = get_restaurant_by_email(db, email)
     if not restaurant:
         raise HTTPException(status_code=404, detail="Restaurant not found", headers={"WWW-Authenticate": "Bearer"})
     if not verify_password(password, restaurant.password):
-        raise HTTPException(status_code=400, detail="Incorrect CIF or password", headers={"WWW-Authenticate": "Bearer"})
+        raise HTTPException(status_code=400, detail="Incorrect email or password", headers={"WWW-Authenticate": "Bearer"})
     return restaurant
 
 async def get_current_restaurant(token: Annotated[str, Depends(oauth2_scheme)], db: Session = Depends(get_db)):
@@ -51,13 +51,13 @@ async def get_current_restaurant(token: Annotated[str, Depends(oauth2_scheme)], 
     )
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        cif: str = payload.get("sub")
-        if cif is None:
+        email: str = payload.get("sub")
+        if email is None:
             raise credentials_exception
-        token_data = schemas.TokenData(username=cif)
+        token_data = schemas.TokenData(username=email)
     except JWTError:
         raise credentials_exception
-    restaurant = db.query(models.Restaurante).filter(models.Restaurante.cif == token_data.username).first()
+    restaurant = db.query(models.Restaurante).filter(models.Restaurante.email == token_data.username).first()
     if restaurant is None:
         raise credentials_exception
     return restaurant
@@ -71,12 +71,12 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
     if not restaurant:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Incorrect CIF or password",
+            detail="Incorrect email or password",
             headers={"WWW-Authenticate": "Bearer"},
         )
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(
-        data={"sub": restaurant.cif}, expires_delta=access_token_expires
+        data={"sub": restaurant.email}, expires_delta=access_token_expires
     )
     return {"access_token": access_token, "token_type": "bearer"}
 

@@ -1,42 +1,76 @@
-import React, { useState } from "react";
-import RestaurantInfo from "../components/restaurant/InfoRestaurant";
-import RestaurantProducts from "../components/restaurant/RestaurantProducts";
-import RestaurantOrders from "../components/restaurant/RestaurantOrders";
+import React, { useEffect, useState } from "react";
+import Sidebar from "../components/dashboard/Sidebar";
+import RestaurantInfo from "../components/dashboard/InfoRestaurant";
+import Products from "../components/dashboard/Products";
+import Orders from "../components/dashboard/Orders";
+import axios from "axios";
 
 const Dashboard = () => {
-  const [section, setSection] = useState("info");
+  const [restaurant, setRestaurant] = useState(null); // Cambiado a null inicialmente
+  const [products, setProducts] = useState([]);
+  const [orders, setOrders] = useState([]);
+
+  useEffect(() => {
+    const fetchRestaurantInfo = async () => {
+      const token = sessionStorage.getItem("access_token");
+      try {
+        const response = await axios.get(
+          "http://localhost:8000/restaurants/me",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        setRestaurant(response.data);
+        sessionStorage.setItem("restaurant_name", response.data.nombre); // Guardar el nombre del restaurante
+      } catch (error) {
+        console.error("Error fetching restaurant info:", error);
+      }
+    };
+
+    fetchRestaurantInfo();
+  }, []);
+
+  useEffect(() => {
+    if (restaurant) {
+      const fetchProducts = async () => {
+        try {
+          const response = await axios.get(
+            `http://localhost:8000/restaurantes/${restaurant.id_restaurante}/productos`
+          );
+          setProducts(response.data);
+        } catch (error) {
+          console.error("Error fetching products:", error);
+        }
+      };
+
+      const fetchOrders = async () => {
+        try {
+          const response = await axios.get(
+            `http://localhost:8000/restaurantes/${restaurant.id_restaurante}/pedidos`
+          );
+          setOrders(response.data);
+        } catch (error) {
+          console.error("Error fetching orders:", error);
+        }
+      };
+
+      fetchProducts();
+      fetchOrders();
+    }
+  }, [restaurant]);
 
   return (
-    <div className="flex h-screen">
-      <nav className="w-1/4 bg-gray-800 text-white p-4">
-        <ul>
-          <li
-            className="mb-4 cursor-pointer"
-            onClick={() => setSection("info")}
-          >
-            Información del Restaurante
-          </li>
-          <li
-            className="mb-4 cursor-pointer"
-            onClick={() => setSection("products")}
-          >
-            Productos
-          </li>
-          <li
-            className="mb-4 cursor-pointer"
-            onClick={() => setSection("orders")}
-          >
-            Pedidos
-          </li>
-        </ul>
-      </nav>
-      <div className="w-3/4 p-4">
-        {section === "info" && <RestaurantInfo />}
-        {section === "products" && <RestaurantProducts />}
-        {section === "orders" && <RestaurantOrders />}
+    <div className="flex">
+      <Sidebar restaurantName={restaurant?.nombre} />
+      <div className="flex-1 p-10">
+        <h1 className="text-3xl font-bold mb-6">Restaurant Dashboard</h1>
+        {restaurant && <RestaurantInfo restaurant={restaurant} />}
+        <Products products={products} />
+        <Orders orders={orders} />
       </div>
     </div>
   );
 };
-
 export default Dashboard;
