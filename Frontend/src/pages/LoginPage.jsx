@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { motion } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../components/context/AuthContext";
+import { toast } from "react-toastify";
 
 export default function LoginPage() {
   const {
@@ -30,13 +31,31 @@ export default function LoginPage() {
 
       if (response.ok) {
         login({ token: result.access_token });
+        toast.success("Inicio de sesión exitoso!", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+        navigate("/");
       } else {
-        throw new Error(
-          result.message || "Ha ocurrido un error durante el inicio de sesión"
-        );
+        throw new Error(result.message || "Usuario o contraseña incorrectos");
       }
     } catch (error) {
-      alert("Error de inicio de sesión: " + error.message);
+      toast.error("Error de inicio de sesión: " + error.message, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
     }
   };
 

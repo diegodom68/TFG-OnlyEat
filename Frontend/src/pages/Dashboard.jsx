@@ -1,76 +1,141 @@
 import React, { useEffect, useState } from "react";
-import Sidebar from "../components/dashboard/Sidebar";
-import RestaurantInfo from "../components/dashboard/InfoRestaurant";
-import Products from "../components/dashboard/Products";
-import Orders from "../components/dashboard/Orders";
 import axios from "axios";
+import Sidebar from "../components/dashboard/Sidebar";
+import Orders from "../components/dashboard/Orders";
+import Products from "../components/dashboard/Products";
+import ProductForm from "../components/dashboard/ProductForm";
+import RestaurantInfo from "../components/dashboard/InfoRestaurant";
 
-const Dashboard = () => {
-  const [restaurant, setRestaurant] = useState(null); // Cambiado a null inicialmente
-  const [products, setProducts] = useState([]);
-  const [orders, setOrders] = useState([]);
+const RestaurantDashboard = () => {
+  const [idRestaurante, setIdRestaurante] = useState(null);
+  const [restaurante, setRestaurante] = useState({});
+  const [pedidos, setPedidos] = useState([]);
+  const [productos, setProductos] = useState([]);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [showForm, setShowForm] = useState(false);
+  const [loading, setLoading] = useState(true);
 
+  // Obtener el `id_restaurante` usando el endpoint `/restaurants/me`
   useEffect(() => {
-    const fetchRestaurantInfo = async () => {
-      const token = sessionStorage.getItem("access_token");
+    const fetchRestaurantId = async () => {
       try {
         const response = await axios.get(
           "http://localhost:8000/restaurants/me",
           {
             headers: {
-              Authorization: `Bearer ${token}`,
+              Authorization: `Bearer ${sessionStorage.getItem("access_token")}`,
             },
           }
         );
-        setRestaurant(response.data);
-        sessionStorage.setItem("restaurant_name", response.data.nombre); // Guardar el nombre del restaurante
+        setIdRestaurante(response.data.id_restaurante);
+        setRestaurante(response.data);
       } catch (error) {
-        console.error("Error fetching restaurant info:", error);
+        console.error("Error al obtener el ID del restaurante:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
-    fetchRestaurantInfo();
+    fetchRestaurantId();
   }, []);
 
+  // Obtener pedidos y productos del restaurante usando `id_restaurante`
   useEffect(() => {
-    if (restaurant) {
-      const fetchProducts = async () => {
+    if (idRestaurante) {
+      const fetchPedidos = async () => {
         try {
           const response = await axios.get(
-            `http://localhost:8000/restaurantes/${restaurant.id_restaurante}/productos`
+            `http://localhost:8000/pedidos/restaurant/${idRestaurante}`,
+            {
+              headers: {
+                Authorization: `Bearer ${sessionStorage.getItem("access_token")}`,
+              },
+            }
           );
-          setProducts(response.data);
+          setPedidos(response.data);
         } catch (error) {
-          console.error("Error fetching products:", error);
+          console.error("Error al obtener los pedidos:", error);
         }
       };
 
-      const fetchOrders = async () => {
+      const fetchProductos = async () => {
         try {
           const response = await axios.get(
-            `http://localhost:8000/restaurantes/${restaurant.id_restaurante}/pedidos`
+            `http://localhost:8000/restaurantes/${idRestaurante}/productos`
           );
-          setOrders(response.data);
+          setProductos(response.data);
         } catch (error) {
-          console.error("Error fetching orders:", error);
+          console.error("Error al obtener los productos:", error);
         }
       };
 
-      fetchProducts();
-      fetchOrders();
+      fetchPedidos();
+      fetchProductos();
     }
-  }, [restaurant]);
+  }, [idRestaurante]);
+
+  const handleDeleteProduct = async (id_producto) => {
+    try {
+      await axios.delete(`http://localhost:8000/delete-product/${id_producto}`);
+      setProductos(
+        productos.filter((producto) => producto.id_producto !== id_producto)
+      );
+    } catch (error) {
+      console.error("Error al eliminar el producto:", error);
+    }
+  };
+
+  const handleEditProduct = (producto) => {
+    setSelectedProduct(producto);
+    setShowForm(true);
+  };
+
+  const handleAddProduct = () => {
+    setSelectedProduct(null);
+    setShowForm(true);
+  };
+
+  const handleSave = () => {
+    setShowForm(false);
+    const fetchProductos = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:8000/restaurantes/${idRestaurante}/productos`
+        );
+        setProductos(response.data);
+      } catch (error) {
+        console.error("Error al obtener los productos:", error);
+      }
+    };
+    fetchProductos();
+  };
+
+  if (loading) {
+    return <p>Cargando...</p>;
+  }
+
+  if (!idRestaurante) {
+    return <p>Error: No se pudo cargar la información del restaurante.</p>;
+  }
 
   return (
     <div className="flex">
-      <Sidebar restaurantName={restaurant?.nombre} />
-      <div className="flex-1 p-10">
-        <h1 className="text-3xl font-bold mb-6">Restaurant Dashboard</h1>
-        {restaurant && <RestaurantInfo restaurant={restaurant} />}
-        <Products products={products} />
-        <Orders orders={orders} />
-      </div>
+      <Sidebar restaurante={restaurante} />
+      <main className="w-3/4 p-6 bg-gray-100 h-screen overflow-auto">
+        <RestaurantInfo restaurant={restaurante} />
+        <Orders pedidos={pedidos} />
+        <Products
+          productos={productos}
+          handleAddProduct={handleAddProduct}
+          handleEditProduct={handleEditProduct}
+          handleDeleteProduct={handleDeleteProduct}
+        />
+        {showForm && (
+          <ProductForm product={selectedProduct} onSave={handleSave} />
+        )}
+      </main>
     </div>
   );
 };
-export default Dashboard;
+
+export default RestaurantDashboard;

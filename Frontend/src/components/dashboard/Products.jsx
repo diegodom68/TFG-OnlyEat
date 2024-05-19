@@ -1,28 +1,55 @@
 import React from "react";
-import { Link } from "react-router-dom";
 
-const Products = ({ products }) => {
+const Products = ({
+  productos,
+  handleAddProduct,
+  handleEditProduct,
+  handleDeleteProduct,
+}) => {
   return (
-    <div className="bg-white p-5 rounded-lg shadow mb-6">
-      <h2 className="text-2xl font-bold mb-4">Products</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {products.map((product) => (
-          <div key={product.id_producto} className="border p-3 rounded">
-            <h3 className="font-bold">{product.nombre_producto}</h3>
-            <p>{product.descripcion}</p>
-            <p>
-              <strong>Price:</strong> {product.precio} €
-            </p>
-            <Link
-              to={`/products/${product.id_producto}`}
-              className="text-blue-500 hover:underline"
-            >
-              View Product
-            </Link>
-          </div>
-        ))}
+    <section id="productos" className="mt-8">
+      <div className="flex justify-between items-center">
+        <h2 className="text-3xl font-bold mb-4">Productos</h2>
+        <button
+          className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+          onClick={handleAddProduct}
+        >
+          Añadir Producto
+        </button>
       </div>
-    </div>
+      {productos.length === 0 ? (
+        <p>No hay productos.</p>
+      ) : (
+        <ul>
+          {productos.map((producto) => (
+            <li
+              key={producto.id_producto}
+              className="mb-6 p-4 bg-white rounded shadow-md"
+            >
+              <p>Nombre: {producto.nombre_producto}</p>
+              <p>Precio: {producto.precio} €</p>
+              <img
+                src={producto.imagen_prod}
+                alt={producto.nombre_producto}
+                width="100"
+              />
+              <button
+                className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                onClick={() => handleEditProduct(producto)}
+              >
+                Editar
+              </button>
+              <button
+                className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+                onClick={() => handleDeleteProduct(producto.id_producto)}
+              >
+                Eliminar
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
+    </section>
   );
 };
 

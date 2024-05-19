@@ -1,30 +1,37 @@
 import React from "react";
-import { Link } from "react-router-dom";
 
-const Orders = ({ orders }) => {
+const Orders = ({ pedidos }) => {
   return (
-    <div className="bg-white p-5 rounded-lg shadow">
-      <h2 className="text-2xl font-bold mb-4">Orders</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {orders.map((order) => (
-          <div key={order.id_pedido} className="border p-3 rounded">
-            <h3 className="font-bold">Order ID: {order.id_pedido}</h3>
-            <p>
-              <strong>Total:</strong> {order.total} €
-            </p>
-            <p>
-              <strong>Status:</strong> {order.estado}
-            </p>
-            <Link
-              to={`/orders/${order.id_pedido}`}
-              className="text-blue-500 hover:underline"
+    <section id="pedidos">
+      <h2 className="text-3xl font-bold mb-4">Pedidos</h2>
+      {pedidos.length === 0 ? (
+        <p>No hay pedidos.</p>
+      ) : (
+        <ul>
+          {pedidos.map((pedido) => (
+            <li
+              key={pedido.id_pedido}
+              className="mb-6 p-4 bg-white rounded shadow-md"
             >
-              View Order
-            </Link>
-          </div>
-        ))}
-      </div>
-    </div>
+              <p>ID Pedido: {pedido.id_pedido}</p>
+              <p>Fecha: {new Date(pedido.fecha_pedido).toLocaleString()}</p>
+              <p>Total: {pedido.total} €</p>
+              <p>Estado: {pedido.estado}</p>
+              <h3 className="mt-4 font-semibold">Productos</h3>
+              <ul className="ml-4">
+                {pedido.lineas_pedido.map((linea) => (
+                  <li key={linea.id_linea}>
+                    <p>Producto: {linea.nombre_producto}</p>
+                    <p>Cantidad: {linea.cantidad}</p>
+                    <p>Precio: {linea.precio} €</p>
+                  </li>
+                ))}
+              </ul>
+            </li>
+          ))}
+        </ul>
+      )}
+    </section>
   );
 };
 

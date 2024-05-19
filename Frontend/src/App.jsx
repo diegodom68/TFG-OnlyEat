@@ -14,6 +14,8 @@ import Cart from "./components/products/Cart";
 import RestaurantLoginPage from "./pages/RestaurtantLoginPage";
 import NotFound from "./pages/Error404";
 import Dashboard from "./pages/Dashboard";
+import ThankYouPage from "./pages/ThankYou";
+import { ToastContainer } from "react-toastify";
 
 function App() {
   return (
@@ -62,8 +64,21 @@ function App() {
                 path="/loginrestaurant"
                 element={<RestaurantLoginPage />}
               />
+              <Route path="/thankyou/:id_pedido" element={<ThankYouPage />} />
               <Route path="*" element={<NotFound />}></Route>
             </Routes>
+            <ToastContainer
+              position="top-right"
+              autoClose={5000}
+              hideProgressBar={false}
+              newestOnTop={false}
+              closeOnClick
+              rtl={false}
+              pauseOnFocusLoss
+              draggable
+              pauseOnHover
+              theme="colored"
+            />
           </SearchProvider>
         </CartProvider>
       </AuthProviderWrapper>

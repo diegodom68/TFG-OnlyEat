@@ -3,6 +3,7 @@ from datetime import date, datetime
 from typing import Union , Optional, List
 
 class User(BaseModel):
+    id_usuario: int
     username: str
     email: Union[str, None] = None
     nombre: Union[str, None] = None
@@ -52,6 +53,11 @@ class Productos(BaseModel):
     precio: float
     id_tipo_prod: int
 
+class ProductoCreate(Productos):
+    pass
+
+class ProductoUpdate(Productos):
+    pass 
 
 class TipoProductoDisplay(BaseModel):
     id_tipo_prod: int
@@ -72,12 +78,10 @@ class LineasPedidoCreate(BaseModel):
     cantidad: int
     precio: float
 
-class LineasPedidoDisplay(BaseModel):
+class LineasPedidoDisplay(LineasPedidoCreate):
     id_linea: int
-    id_pedido: int
-    id_producto: int
-    cantidad: int
-    precio: float
+    nombre_producto: str
+    imagen_prod: str
 
     class Config:
         from_attributes = True
@@ -100,7 +104,6 @@ class PedidoDisplay(BaseModel):
 
     class Config:
         from_attributes = True
-
 
 
 
