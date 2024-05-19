@@ -24,12 +24,11 @@ export default function RestaurantLoginPage() {
       const data = await response.json();
 
       if (response.ok) {
-        // Simulación de la autenticación del restaurante
-        sessionStorage.setItem("authToken", data.token); // Guardar el token recibido
+        sessionStorage.setItem("access_token", data.access_token); // Guardar el token recibido con la clave correcta
         navigate("/dashboard"); // Redirigir al dashboard del restaurante
       } else {
         throw new Error(
-          data.message || "Ha ocurrido un error durante el inicio de sesión"
+          data.detail || "Ha ocurrido un error durante el inicio de sesión"
         );
       }
     } catch (error) {

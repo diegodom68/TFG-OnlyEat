@@ -37,6 +37,7 @@ class RestauranteInDB(Restaurante):
 
 class RestauranteDisplay(Restaurante):
     id_restaurante: int
+    
 
 
 class Userread(User):

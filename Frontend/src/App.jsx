@@ -13,6 +13,7 @@ import { SearchProvider } from "./components/context/searchcontext";
 import Cart from "./components/products/Cart";
 import RestaurantLoginPage from "./pages/RestaurtantLoginPage";
 import NotFound from "./pages/Error404";
+import Dashboard from "./pages/Dashboard";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
               <Route path="/" element={<HomePage />} />
               <Route path="/login" element={<LoginPage />} />
               <Route path="/signup" element={<SignUp />} />
+              <Route path="/dashboard" element={<Dashboard />} />
               <Route
                 path="/user"
                 element={
@@ -58,11 +60,7 @@ function App() {
               />
               <Route
                 path="/loginrestaurant"
-                element={
-                  <ProtectedRoute>
-                    <RestaurantLoginPage />
-                  </ProtectedRoute>
-                }
+                element={<RestaurantLoginPage />}
               />
               <Route path="*" element={<NotFound />}></Route>
             </Routes>

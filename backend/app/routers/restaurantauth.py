@@ -57,37 +57,13 @@ async def get_current_restaurant(token: Annotated[str, Depends(oauth2_scheme)], 
         token_data = schemas.TokenData(username=cif)
     except JWTError:
         raise credentials_exception
-    restaurant = get_restaurant(db, cif=token_data.username)
+    restaurant = db.query(models.Restaurante).filter(models.Restaurante.cif == token_data.username).first()
     if restaurant is None:
         raise credentials_exception
     return restaurant
 
 async def get_current_active_restaurant(current_restaurant: Annotated[models.Restaurante, Depends(get_current_restaurant)]):
     return current_restaurant
-
-@router.post("/restaurants/", response_model=schemas.RestauranteDisplay)
-def create_restaurant(restaurant: schemas.RestauranteInDB, db: Session = Depends(get_db)):
-    existing_restaurant = db.query(models.Restaurante).filter(
-        (models.Restaurante.email == restaurant.email) | (models.Restaurante.cif == restaurant.cif)).first()
-    if existing_restaurant:
-        raise HTTPException(status_code=400, detail="Email or CIF already registered")
-    
-    hashed_password = pwd_context.hash(restaurant.password)
-    db_restaurant = models.Restaurante(
-        nombre=restaurant.nombre,
-        email=restaurant.email,
-        cif=restaurant.cif,
-        password=hashed_password,
-        cp=restaurant.cp,
-        ciudad=restaurant.ciudad,
-        direccion=restaurant.direccion,
-        telefono=restaurant.telefono,
-        imagen=restaurant.imagen
-    )
-    db.add(db_restaurant)
-    db.commit()
-    db.refresh(db_restaurant)
-    return db_restaurant
 
 @router.post("/restaurant-token", response_model=dict)
 async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
