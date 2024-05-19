@@ -1,9 +1,10 @@
 from typing import List, Optional
 
-from sqlalchemy import Date, DateTime, ForeignKeyConstraint, Index, String
+from sqlalchemy import DECIMAL, Date, DateTime, Float, ForeignKeyConstraint, Index, String
 from sqlalchemy.dialects.mysql import INTEGER
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 import datetime
+import decimal
 
 class Base(DeclarativeBase):
     pass
@@ -79,13 +80,15 @@ class Pedidos(Base):
 
     id_pedido: Mapped[int] = mapped_column(INTEGER(11), primary_key=True)
     fecha_pedido: Mapped[datetime.datetime] = mapped_column(DateTime)
-    estado: Mapped[str] = mapped_column(String(60))
-    id_usuario: Mapped[Optional[int]] = mapped_column(INTEGER(11))
-    id_restaurante: Mapped[Optional[int]] = mapped_column(INTEGER(11))
+    total: Mapped[decimal.Decimal] = mapped_column(DECIMAL(10, 2))
+    estado: Mapped[str] = mapped_column(String(50))
+    id_usuario: Mapped[int] = mapped_column(INTEGER(11))
+    id_restaurante: Mapped[int] = mapped_column(INTEGER(11))
 
     restaurante: Mapped['Restaurante'] = relationship('Restaurante', foreign_keys=[id_restaurante], back_populates='pedidos')
     restaurante_: Mapped['Restaurante'] = relationship('Restaurante', foreign_keys=[id_restaurante], back_populates='pedidos_')
     users: Mapped['Users'] = relationship('Users', back_populates='pedidos')
+    lineas_pedido: Mapped[List['LineasPedido']] = relationship('LineasPedido', back_populates='pedidos')
 
 
 class Productos(Base):
@@ -99,6 +102,7 @@ class Productos(Base):
 
     id_producto: Mapped[int] = mapped_column(INTEGER(11), primary_key=True)
     nombre_producto: Mapped[str] = mapped_column(String(50))
+    precio: Mapped[float] = mapped_column(Float)
     imagen_prod: Mapped[str] = mapped_column(String(255))
     id_restaurante: Mapped[int] = mapped_column(INTEGER(11))
     id_tipo_prod: Mapped[int] = mapped_column(INTEGER(255))
@@ -106,3 +110,23 @@ class Productos(Base):
 
     restaurante: Mapped['Restaurante'] = relationship('Restaurante', back_populates='productos')
     tipos_producto: Mapped['TiposProducto'] = relationship('TiposProducto', back_populates='productos')
+    lineas_pedido: Mapped[List['LineasPedido']] = relationship('LineasPedido', back_populates='productos')
+
+
+class LineasPedido(Base):
+    __tablename__ = 'lineas_pedido'
+    __table_args__ = (
+        ForeignKeyConstraint(['id_pedido'], ['pedidos.id_pedido'], name='lineas_pedido_ibfk_1'),
+        ForeignKeyConstraint(['id_producto'], ['productos.id_producto'], name='lineas_pedido_ibfk_2'),
+        Index('id_pedido', 'id_pedido'),
+        Index('id_producto', 'id_producto')
+    )
+
+    id_linea: Mapped[int] = mapped_column(INTEGER(11), primary_key=True)
+    id_pedido: Mapped[int] = mapped_column(INTEGER(11))
+    id_producto: Mapped[int] = mapped_column(INTEGER(11))
+    cantidad: Mapped[int] = mapped_column(INTEGER(11))
+    precio: Mapped[decimal.Decimal] = mapped_column(DECIMAL(10, 2))
+
+    pedidos: Mapped['Pedidos'] = relationship('Pedidos', back_populates='lineas_pedido')
+    productos: Mapped['Productos'] = relationship('Productos', back_populates='lineas_pedido')

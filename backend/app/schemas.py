@@ -1,6 +1,6 @@
 from pydantic import BaseModel
-from datetime import date 
-from typing import Union
+from datetime import date, datetime
+from typing import Union , Optional, List
 
 class User(BaseModel):
     username: str
@@ -67,6 +67,39 @@ class ProductosDisplay(BaseModel):
     
 
 
+class LineasPedidoCreate(BaseModel):
+    id_producto: int
+    cantidad: int
+    precio: float
+
+class LineasPedidoDisplay(BaseModel):
+    id_linea: int
+    id_pedido: int
+    id_producto: int
+    cantidad: int
+    precio: float
+
+    class Config:
+        from_attributes = True
+
+class PedidoCreate(BaseModel):
+    id_usuario: int
+    id_restaurante: int
+    total: float
+    estado: Optional[str] = "Pendiente"
+    lineas: List[LineasPedidoCreate]
+
+class PedidoDisplay(BaseModel):
+    id_pedido: int
+    fecha_pedido: datetime
+    total: float
+    estado: str
+    id_usuario: int
+    id_restaurante: int
+    lineas_pedido: List[LineasPedidoDisplay]
+
+    class Config:
+        from_attributes = True
 
 
 
