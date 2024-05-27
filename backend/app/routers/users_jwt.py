@@ -28,11 +28,11 @@ def create_acces_token(data: dict,expires_delta: timedelta = None):
     encode_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return encode_jwt
 
-def get_user(db: Session, username: str) -> Union[schemas.UserCreate, None]:
+def get_user(db: Session, username: str) -> Union[schemas.UserDisplay, None]:
     user = db.query(models.Users).filter(models.Users.username == username).first()
     if user:
         print(user)
-        return schemas.UserCreate(**user.__dict__)
+        return schemas.UserDisplay(**user.__dict__)
     return None
 
 
@@ -84,7 +84,7 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
         apellido=user.apellido,
         email=user.email,
         username=user.username,
-        password=hashed_password  # Asegúrate de que el modelo en la base de datos use `hashed_password`
+        password=hashed_password  
     )
     db.add(db_user)
     db.commit()

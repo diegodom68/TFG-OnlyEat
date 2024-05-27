@@ -16,10 +16,15 @@ class User(BaseModel):
 class TokenData(BaseModel):
     username: str | None = None
 
-
-class UserCreate(User):
+class UserDisplay(User):
     password: str
-
+    
+class UserCreate(BaseModel):
+    nombre: str
+    apellido: str
+    email: str
+    username: str
+    password: str
 
 
 class Restaurante(BaseModel):
