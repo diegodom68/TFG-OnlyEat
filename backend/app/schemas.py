@@ -12,6 +12,7 @@ class User(BaseModel):
     telefono: Union[str, None] = None
     cp: Union[int, None] = None
     ciudad: Union[str, None] = None
+    fecha_nacimiento: Union[date, None] = None
 
 class TokenData(BaseModel):
     username: str | None = None
@@ -25,6 +26,18 @@ class UserCreate(BaseModel):
     email: str
     username: str
     password: str
+
+class UserUpdate(BaseModel):
+    nombre: Optional[str]
+    apellido: Optional[str]
+    direccion: Optional[str]
+    ciudad: Optional[str]
+    telefono: Optional[str]
+    cp: Optional[int]
+    fecha_nacimiento: Optional[date]
+
+    class Config:
+        from_attributes = True
 
 
 class Restaurante(BaseModel):
